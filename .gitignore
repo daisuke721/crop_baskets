@@ -1,0 +1,62 @@
+# Node.js関連の無視ファイル
+/node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Next.js（frontend）関連
+/frontend/.next/
+/frontend/out/
+/frontend/build/
+
+/frontend/coverage
+/frontend/.vercel
+
+# TypeScript（frontend）関連
+/frontend/next-env.d.ts
+*.tsbuildinfo
+
+# Rails（backend）関連の無視ファイル
+/backend/.bundle
+
+# 環境変数ファイル（全体）
+/.env*
+!/.env*.erb
+
+# Rails のログ・一時ファイル（backend）
+/backend/log/*
+/backend/tmp/*
+!/backend/log/.keep
+!/backend/tmp/.keep
+
+# Rails の PID ファイル
+/backend/tmp/pids/*
+!/backend/tmp/pids/
+!/backend/tmp/pids/.keep
+
+# Rails のストレージ関連（backend）
+/backend/storage/*
+!/backend/storage/.keep
+/backend/tmp/storage/*
+!/backend/tmp/storage/
+!/backend/tmp/storage/.keep
+
+# Rails のマスターキー（機密情報）
+/backend/config/master.key
+
+# macOS / Windows の不要ファイルを無視
+.DS_Store
+Thumbs.db
+
+# Git のデバッグログを無視
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Vercel（frontend）関連
+/frontend/.vercel
