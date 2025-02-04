@@ -11,7 +11,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     ports:
-      - '3306:3306'
+      - "3306:3306"
 
   backend:
     build:
@@ -26,7 +26,7 @@ services:
     env_file:
       - .env
     ports:
-      - ${RAILS_PORT}:3000
+      - "${RAILS_PORT}:3000"
     depends_on:
       - db
     stdin_open: true
@@ -34,8 +34,8 @@ services:
 
   frontend:
     build:
-    context: ./frontend/
-    dockerfile: Dockerfile
+      context: ./frontend/
+      dockerfile: Dockerfile
     command: bash -c "npm run dev"
     volumes:
       - ./frontend:/usr/src/app:delegated
@@ -43,7 +43,7 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     ports:
-      - ${NEXTJS_PORT}:3000
+      - "${NEXTJS_PORT}:3000"
 
 volumes:
   mysql-data:
