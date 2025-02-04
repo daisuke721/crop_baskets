@@ -46,5 +46,5 @@ services:
       - "${NEXTJS_PORT}:3000"
 
 volumes:
-  mysql-data:
+  db-data:
   node_modules:
