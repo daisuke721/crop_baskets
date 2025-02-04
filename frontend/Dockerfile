@@ -1,7 +1,11 @@
-FROM node:20.6.1-slim
+FROM node:20.9.0-slim
 
 WORKDIR /usr/src/app
 
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
 
-RUN npm install
+RUN yarn install
+
+COPY . .
+
+CMD [ "yarn", "dev" ]
