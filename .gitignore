@@ -9,6 +9,7 @@
 !.yarn/versions
 
 # Next.js（frontend）関連
+/frontend/node_modules/
 /frontend/.next/
 /frontend/out/
 /frontend/build/
