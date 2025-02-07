@@ -22,7 +22,6 @@ jobs:
           ruby-version: 3.2.2
           bundler-cache: true
           working-directory: backend
-      - name: Clear cache
-        run: rm -rf ~/.cache/rubocop_cache
       - name: Run rubocop
         run: bundle exec rubocop
+        working-directory: backend
