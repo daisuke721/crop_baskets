@@ -2,7 +2,6 @@ module.exports = {
   root: true,
   // 必要に応じて無視するパターンを指定
   ignorePatterns: ['node_modules', '.next'],
-  // Next.js + Prettier の推奨設定を使用
   extends: ['next', 'prettier'],
   // JS/JSX のみ使うなら parserOptions で ecmaVersion, sourceType を指定
   parserOptions: {
@@ -10,7 +9,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    // 好みでルール追加・上書き
     'no-console': 'warn',
     'no-unused-vars': 'warn',
     // Next.js では React import が不要なので無効化
