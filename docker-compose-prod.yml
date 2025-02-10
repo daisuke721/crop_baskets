@@ -10,7 +10,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     env_file:
-      - .env.dev
+      - .env.prod
     ports:
       - "3306:3306"
 
@@ -24,8 +24,9 @@ services:
       - ./backend/vendor/bundle:/crop_baskets/vendor/bundle
     environment:
       TZ: Asia/Tokyo
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
     env_file:
-      - .env.dev
+      - .env.prod
     ports:
       - "${RAILS_PORT}:3000"
     depends_on:
@@ -44,7 +45,7 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     env_file:
-      - .env.dev
+      - .env.prod
     ports:
       - "${NEXTJS_PORT}:3000"
 
