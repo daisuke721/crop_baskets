@@ -11,6 +11,10 @@ module.exports = {
         noto: 'var(--font-noto-sans-jp), sans-serif',
         roboto: 'var(--font-roboto), sans-serif',
       },
+      colors: {
+        sprayGreen: '#A4D5BD',
+        honey: '#E7BB5E',
+      },
     },
   },
   plugins: [],
