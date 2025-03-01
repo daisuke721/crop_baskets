@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Nav from '../../components/Nav';
 
 const Page = () => {
   const router = useRouter();
@@ -19,7 +20,8 @@ const Page = () => {
 
   return (
     <>
-      <h1>ホームページです</h1>
+      <Nav />
+      <h1 className="font-noto">ホームページです</h1>
       <ul>
         <li>
           <a onClick={handleCreate}>出品ページへ</a>
