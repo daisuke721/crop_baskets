@@ -17,7 +17,7 @@ class Api::V1::CommodityCropsController < ApplicationController
         end
       end
 
-      render json: commodity_crop, include: [:commodity_crop_images => { methods: :image_url }], status: :created
+      render json: commodity_crop, include: [commodity_crop_images: { methods: :image_url }], status: :created
     else
       render json: { errors: commodity_crop.errors.full_messages }, status: :unprocessable_entity
     end
