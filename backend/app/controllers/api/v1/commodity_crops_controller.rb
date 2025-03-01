@@ -4,6 +4,11 @@ class Api::V1::CommodityCropsController < ApplicationController
     render json: commodity_crops, include: [:crop, :commodity_crop_images]
   end
 
+  def show
+    commodity_crop = CommodityCrop.includes(:crop, :commodity_crop_images).find(params[:id])
+    render json: commodity_crop, include: [:crop, :commodity_crop_images]
+  end
+
   def create
     commodity_crop = CommodityCrop.new(commodity_crop_params)
 
