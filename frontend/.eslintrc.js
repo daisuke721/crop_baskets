@@ -9,7 +9,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'no-console': 'warn',
+    'no-console': 'off',
     'no-unused-vars': 'warn',
     // Next.js では React import が不要なので無効化
     'react/react-in-jsx-scope': 'off',
