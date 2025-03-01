@@ -1,7 +1,7 @@
 class Api::V1::CropsController < ApplicationController
   def index
     crops = Crop.all
-    render json: crops
+    render json: crops, only: [:id, :name, :producing_area]
   end
 
   def show
