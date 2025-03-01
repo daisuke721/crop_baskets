@@ -2,20 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 画面全体を中央配置 */
+.center-container {
+  @apply w-full h-screen flex justify-center items-center bg-gray-100;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* モバイルの幅を適切に調整 */
+.mobile-container {
+  @apply w-full h-screen max-w-[480px] sm:max-w-[600px] mx-auto bg-white flex flex-col relative;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* スクロール可能エリア */
+.content-area {
+  @apply flex-1 overflow-y-auto pb-20;
+}
+
+/* フッターボタンの固定 */
+.footer-button {
+  @apply absolute bottom-0 left-0 w-full border-t border-gray-200 bg-white;
+}
+
+/* 全体のスクロールを有効化 */
+html, body {
+  @apply w-full h-full overflow-auto;
 }
