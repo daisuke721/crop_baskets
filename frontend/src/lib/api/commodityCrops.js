@@ -11,3 +11,9 @@ export const fetchCommodityCrops = async () => {
   const response = await apiClient.get('/commodity_crops');
   return response.data;
 };
+
+// 商品詳細を取得
+export const fetchCommodityCropById = async (id) => {
+  const response = await apiClient.get(`/commodity_crops/${id}`);
+  return response.data;
+};
