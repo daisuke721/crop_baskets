@@ -43,3 +43,6 @@ end
 
 # 環境変数を読み込む
 gem 'dotenv-rails'
+
+# シリアライザーのインストール
+gem 'active_model_serializers'

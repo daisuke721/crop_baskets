@@ -12,7 +12,7 @@ const Page = () => {
     router.push('/detail');
   };
   const handleList = () => {
-    router.push('/List');
+    router.push('/list');
   };
   const handleCart = () => {
     router.push('/cart');
