@@ -3,17 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import { fetchCommodityCropById } from '../../../lib/api/commodityCrops';
+import { addToCart } from '../../../lib/api/cart';
 
 const Page = ({ params }) => {
   const router = useRouter();
-  const handleHome = () => {
-    router.push('/home');
-  };
   const handleOrder = () => {
     router.push('/order');
-  };
-  const handleCart = () => {
-    router.push('/cart');
   };
 
   const [commodityCrop, setCommodityCrop] = useState(null);
@@ -32,6 +27,15 @@ const Page = ({ params }) => {
 
     loadCommodityCrop();
   }, [id]);
+
+  // 商品作物をカートに追加
+  const handleAddToCart = async () => {
+    if (!commodityCrop) return;
+
+    await addToCart(commodityCrop.id, commodityCrop.price);
+    alert(`${commodityCrop.name} をカートに追加しました！`);
+    router.push('/cart');
+  };
 
   if (!commodityCrop) return <p>読み込み中...</p>;
 
@@ -95,7 +99,7 @@ const Page = ({ params }) => {
             購入手続きへ
           </button>
           <button
-            onClick={handleCart}
+            onClick={handleAddToCart}
             className="font-noto text-xl bg-white text-honey border border-honey px-2 py-3 rounded-lg"
           >
             カートに入れる
