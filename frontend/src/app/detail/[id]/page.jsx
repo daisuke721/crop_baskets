@@ -8,7 +8,7 @@ import { addToCart } from '../../../lib/api/cart';
 const Page = ({ params }) => {
   const router = useRouter();
   const handleOrder = () => {
-    router.push('/order');
+    router.push('/checkout');
   };
 
   const [commodityCrop, setCommodityCrop] = useState(null);

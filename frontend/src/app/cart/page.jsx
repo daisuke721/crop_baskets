@@ -8,7 +8,7 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 const Page = () => {
   const router = useRouter();
   const handleOrder = () => {
-    router.push('/order');
+    router.push('/checkout');
   };
 
   const [cartItems, setCartItems] = useState([]);
