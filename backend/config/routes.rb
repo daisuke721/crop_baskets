@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       resources :crops, only: [:index, :show]
       resources :commodity_crops, only: [:index, :show, :create, :update, :destroy]
       resources :cart_items, only: [:index, :create, :destroy]
-      resources :orders, only: [:index, :create, :show]
+      resources :orders, only: [:index, :new, :create, :show]
     end
   end
 end
