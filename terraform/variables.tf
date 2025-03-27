@@ -1,5 +1,3 @@
-# terraform/variables.tf
-
 variable "aws_region" {
   description = "デプロイ先のAWSリージョン"
   type        = string
@@ -9,4 +7,9 @@ variable "aws_region" {
 variable "aws_profile" {
   description = "AWS CLIのプロファイル名"
   type        = string
+}
+
+variable "vpc_cidr" {
+  type        = string
+  description = "VPCのCIDRブロック"
 }
