@@ -61,3 +61,10 @@ yarn-error.log*
 
 # Vercel（frontend）関連
 /frontend/.vercel
+
+# Terraform関連
+.terraform/
+*.tfstate
+*.tfstate.backup
+crash.log
+terraform.tfvars
