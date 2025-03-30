@@ -53,4 +53,5 @@ production:
   <<: *default
   database: <%= ENV['MYSQL_DATABASE'] %>_production
   username: <%= ENV['MYSQL_ROOT_USER'] %>
-  password: <%= ENV["MYSQL_ROOT_PASSWORD"] %>
+  password: <%= ENV['MYSQL_ROOT_PASSWORD'] %>
+  host: <%= ENV['MYSQL_HOST'] %>
