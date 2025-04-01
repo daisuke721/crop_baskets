@@ -28,3 +28,10 @@ dev_cop:
 
 dev_cop_a:
 	docker compose -f docker-compose-dev.yml --env-file .env.dev exec backend rubocop -a
+
+# 本番環境
+prod_build:
+	docker compose -f docker-compose-prod.yml --env-file .env.prod up -d --build
+
+prod_down:
+	docker compose -f docker-compose-prod.yml --env-file .env.prod down
