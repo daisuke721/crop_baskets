@@ -33,5 +33,20 @@ dev_cop_a:
 prod_build:
 	docker compose -f docker-compose-prod.yml --env-file .env.prod up -d --build
 
+prod_up:
+	docker compose -f docker-compose-prod.yml --env-file .env.prod up -d
+
 prod_down:
 	docker compose -f docker-compose-prod.yml --env-file .env.prod down
+
+prod_stop:
+	docker compose -f docker-compose-prod.yml --env-file .env.prod stop
+
+prod_db:
+	docker compose -f docker-compose-prod.yml --env-file .env.prod exec backend rails db:create
+
+prod_back:
+	docker compose -f docker-compose-prod.yml --env-file .env.prod exec backend bash
+
+prod_back_logs:
+	docker compose -f docker-compose-prod.yml --env-file .env.prod logs -f backend
