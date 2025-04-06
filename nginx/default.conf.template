@@ -2,6 +2,12 @@ server {
   listen ${NGINX_PORT};
   server_name ${NGINX_SERVER_NAME};
 
+  # ヘルスチェック対応（Nginxが直接返す）
+  location = /health_check {
+    add_header Content-Type text/plain;
+    return 200 'ok';
+  }
+
   # Rails APIにリバースプロキシ
   location /api/ {
     proxy_pass ${BACKEND_HOST}/api/;
