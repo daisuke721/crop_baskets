@@ -4,10 +4,10 @@
 # Handle Cross-Origin Resource Sharing (CORS) in order to accept cross-origin Ajax requests.
 
 # Read more: https://github.com/cyu/rack-cors
-# Rails.env.production? ? 'https://cropbaskets.jp' : 'http://localhost:3000'
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "https://www.cropbaskets.jp"
+    origins Rails.env.production? ? 'https://cropbaskets.jp' : 'http://localhost:3000'
+    puts puts "CORS Origin: #{origin}"
 
     resource "*",
       headers: :any,
