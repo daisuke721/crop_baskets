@@ -24,7 +24,6 @@ services:
       - ./backend/vendor/bundle:/crop_baskets/vendor/bundle
     environment:
       TZ: Asia/Tokyo
-      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
     env_file:
       - .env.dev
     ports:
