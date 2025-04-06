@@ -1,10 +1,7 @@
 class Api::V1::CommodityCropsController < ApplicationController
-  # def index
-  #   commodity_crops = CommodityCrop.includes(:crop, :commodity_crop_images).all
-  #   render json: commodity_crops, each_serializer: CommodityCropListSerializer
-  # end
   def index
-    render json: []
+    commodity_crops = CommodityCrop.includes(:crop, :commodity_crop_images).all
+    render json: commodity_crops, each_serializer: CommodityCropListSerializer
   end
 
   def show

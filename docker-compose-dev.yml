@@ -18,7 +18,7 @@ services:
     build:
       context: ./backend/
       dockerfile: Dockerfile.dev
-    command: bash -c "rm -f crop_baskets/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    command: bash -c "rm -f crop_baskets/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0' -p ${RAILS_PORT}"
     volumes:
       - ./backend:/crop_baskets
       - ./backend/vendor/bundle:/crop_baskets/vendor/bundle
@@ -28,7 +28,7 @@ services:
     env_file:
       - .env.dev
     ports:
-      - "${RAILS_PORT}:3000"
+      - "${RAILS_PORT}:8000"
     depends_on:
       - db
     stdin_open: true
@@ -46,6 +46,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
     env_file:
       - .env.dev
+      - .env.local
     ports:
       - "${NEXTJS_PORT}:3000"
 

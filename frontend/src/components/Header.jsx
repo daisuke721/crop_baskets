@@ -11,7 +11,7 @@ const Header = () => {
       <header className="h-28 w-full border-b flex justify-between items-center">
         <div className="flex place-items-center px-5">
           <h1>
-            <Link href="/home">
+            <Link href="/">
               <Image src="/logo.png" alt="Crop Baskets" width={150} height={100} />
             </Link>
           </h1>

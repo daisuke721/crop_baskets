@@ -9,21 +9,39 @@
 #   end
 
 Crop.create!([
-  { name: "ごぼう", producing_area: "宮崎県産" },
-  { name: "ごぼう", producing_area: "鹿児島県産" },
-  { name: "ごぼう", producing_area: "青森県産" },
-  { name: "さつまいも", producing_area: "宮崎県産" },
-  { name: "さつまいも", producing_area: "鹿児島県産" },
-  { name: "さつまいも", producing_area: "熊本県産" },
-  { name: "さつまいも", producing_area: "茨城県産" },
-  { name: "じゃがいも", producing_area: "宮崎県産" },
-  { name: "じゃがいも", producing_area: "鹿児島県産" },
-  { name: "じゃがいも", producing_area: "北海道産" },
-  { name: "さといも", producing_area: "宮崎県産" },
-  { name: "さといも", producing_area: "岩手県産" },
+  # 宮崎県
+  { name: "きゅうり", producing_area: "宮崎県産" },
+  { name: "ピーマン", producing_area: "宮崎県産" },
   { name: "キャベツ", producing_area: "宮崎県産" },
+  { name: "ごぼう", producing_area: "宮崎県産" },
+  { name: "さつまいも", producing_area: "宮崎県産" },
+  { name: "にんじん", producing_area: "宮崎県産" },
+  { name: "トマト", producing_area: "宮崎県産" },
+  { name: "じゃがいも", producing_area: "宮崎県産" },
+  { name: "さといも", producing_area: "宮崎県産" },
+  { name: "マンゴー", producing_area: "宮崎県産" },
+
+  # 鹿児島県
+  { name: "さつまいも", producing_area: "鹿児島県産" },
+  { name: "だいこん", producing_area: "鹿児島県産" },
+  { name: "そらまめ", producing_area: "鹿児島県産" },
+  { name: "ごぼう", producing_area: "鹿児島県産" },
   { name: "キャベツ", producing_area: "鹿児島県産" },
-  { name: "キャベツ", producing_area: "群馬県産" },
-  { name: "にんじん", producing_area: "北海道産" },
-  { name: "にんじん", producing_area: "千葉県産" }
+  { name: "たまねぎ", producing_area: "鹿児島県産" },
+  { name: "じゃがいも", producing_area: "鹿児島県産" },
+  { name: "にんじん", producing_area: "鹿児島県産" },
+  { name: "ピーマン", producing_area: "鹿児島県産" },
+  { name: "オクラ", producing_area: "鹿児島県産" },
+
+  # 熊本県
+  { name: "すいか", producing_area: "熊本県産" },
+  { name: "トマト", producing_area: "熊本県産" },
+  { name: "いちご", producing_area: "熊本県産" },
+  { name: "なす", producing_area: "熊本県産" },
+  { name: "メロン", producing_area: "熊本県産" },
+  { name: "さつまいも", producing_area: "熊本県産" },
+  { name: "きゅうり", producing_area: "熊本県産" },
+  { name: "キャベツ", producing_area: "熊本県産" },
+  { name: "だいこん", producing_area: "熊本県産" },
+  { name: "にんじん", producing_area: "熊本県産" }
 ])

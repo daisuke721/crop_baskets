@@ -1,9 +1,13 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+const baseURL =
+  typeof window === 'undefined'
+    ? process.env.INTERNAL_API_BASE_URL // SSR用
+    : process.env.NEXT_PUBLIC_API_BASE_URL; // ブラウザ用
 
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },

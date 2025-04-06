@@ -8,8 +8,15 @@ export const createCommodityCrop = (data) =>
 
 // 商品一覧を取得
 export const fetchCommodityCrops = async () => {
-  const response = await apiClient.get('/commodity_crops');
-  return response.data;
+  try {
+    const response = await apiClient.get('/commodity_crops');
+    return response.data;
+  } catch (error) {
+    console.error('APIリクエスト失敗');
+    console.error('Request URL:', apiClient.defaults.baseURL + '/commodity_crops');
+    console.error('Error details:', error);
+    throw error;
+  }
 };
 
 // 商品詳細を取得

@@ -10,7 +10,7 @@ import { createCommodityCrop } from '../../lib/api/commodityCrops';
 const Page = () => {
   const router = useRouter();
   const handleHome = () => {
-    router.push('/home');
+    router.push('/');
   };
 
   // 画像のアップロード
