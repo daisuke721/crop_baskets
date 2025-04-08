@@ -24,6 +24,8 @@ jobs:
           echo "EC2_HOSTS=${{ secrets.EC2_HOST_1A }} ${{ secrets.EC2_HOST_2C }}" >> $GITHUB_ENV
 
       - name: Deploy to EC2 instance
+        env:
+          EC2_HOSTS: '${{ secrets.EC2_HOST_1A }} ${{ secrets.EC2_HOST_2C }}'
         run: |
           for HOST in $EC2_HOSTS; do
             echo "Deploying to $HOST..."
