@@ -60,7 +60,7 @@ const Page = () => {
       .catch((error) => {
         console.error('作物リストの取得エラー:', error);
       });
-  });
+  }, []);
 
   // 出品処理
   const handleSubmit = async () => {
