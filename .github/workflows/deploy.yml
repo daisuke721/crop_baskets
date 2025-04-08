@@ -31,11 +31,9 @@ jobs:
               --exclude=".git" \
               ./ ${{ secrets.EC2_USER }}@$HOST:/home/${{ secrets.EC2_USER }}/crop_baskets
 
-            ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$HOST << EOF
-              set -e
-              cd ~/crop_baskets
-              docker compose -f docker-compose-prod.yml --env-file .env.prod down
-              docker compose -f docker-compose-prod.yml --env-file .env.prod up -d --build
-              docker compose -f docker-compose-prod.yml --env-file .env.prod exec backend rails db:migrate
-            EOF
+            ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$HOST \
+              "set -e && cd ~/crop_baskets && \
+              docker compose -f docker-compose-prod.yml --env-file .env.prod down && \
+              docker compose -f docker-compose-prod.yml --env-file .env.prod up -d --build && \
+              docker compose -f docker-compose-prod.yml --env-file .env.prod exec backend rails db:migrate"
           done
