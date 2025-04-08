@@ -5,7 +5,7 @@ class CommodityCropListSerializer < ActiveModel::Serializer
   # commodity_crop_images を明示的に追加
   attribute :commodity_crop_images do
     object.commodity_crop_images.map do |image|
-      { image_url: Rails.application.routes.url_helpers.rails_blob_url(image.image, host: ENV.fetch('BACKEND_ORIGIN', 'http://localhost:8000')) }
+      { image_url: Rails.application.routes.url_helpers.rails_blob_url(image.image, host: ENV.fetch('RAILS_API_HOST', 'http://localhost:8000')) }
     end
   end
 end

@@ -5,7 +5,7 @@ class CommodityCropImageSerializer < ActiveModel::Serializer
   def image_url
     if object.image.attached?
       Rails.application.routes.url_helpers.rails_blob_url(object.image,
-                                                          host: ENV.fetch('BACKEND_ORIGIN',
+                                                          host: ENV.fetch('RAILS_API_HOST',
                                                                           'http://localhost:8000'))
     end
   end
