@@ -11,24 +11,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # リポジトリのコードをチェックアウト（clone）
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # AWS CLI用の認証情報を設定（Secretsから取得）
+      - name: Setup AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # 現在のGitHub ActionsランナーのグローバルIPアドレスを取得
+      - name: Get runner public IP
+        id: ip
+        run: |
+          echo "IP=$(curl -s https://checkip.amazonaws.com)" >> $GITHUB_ENV
+
+      # セキュリティグループに一時的にSSH（22番ポート）許可ルールを追加
+      - name: Add temporary SSH rule to Security Group
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr $IP/32
+
+      # SSH接続用の秘密鍵をbase64から復号してファイルに保存
       - name: SSH private key
         run: |
           echo "${{ secrets.EC2_KEY }}" | base64 -d > key.pem
           chmod 600 key.pem
 
+      # 環境変数EC2_HOSTSに2台分のホストIPを格納（Secretsから取得）
       - name: EC2 host
         run: |
-          echo "EC2_HOSTS=${{ secrets.EC2_HOST_1A }} ${{ secrets.EC2_HOST_2C }}" >> $GITHUB_ENV
+          echo "EC2_HOSTS=${{ secrets.EC2_HOST_1A }} ${{ secrets.EC2_HOST_1C }}" >> $GITHUB_ENV
 
+      # 各EC2インスタンスに対してデプロイを実行
       - name: Deploy to EC2 instance
         env:
-          EC2_HOSTS: '${{ secrets.EC2_HOST_1A }} ${{ secrets.EC2_HOST_2C }}'
+          EC2_HOSTS: '${{ secrets.EC2_HOST_1A }} ${{ secrets.EC2_HOST_1C }}'
         run: |
           for HOST in $EC2_HOSTS; do
             echo "Deploying to $HOST..."
+
             rsync -avz -e "ssh -i key.pem -o StrictHostKeyChecking=no" \
               --exclude=".git" \
               ./ ${{ secrets.EC2_USER }}@$HOST:/home/${{ secrets.EC2_USER }}/crop_baskets
@@ -39,3 +67,13 @@ jobs:
               docker compose -f docker-compose-prod.yml --env-file .env.prod up -d --build && \
               docker compose -f docker-compose-prod.yml --env-file .env.prod exec backend rails db:migrate"
           done
+
+      # セキュリティグループから一時的に追加したSSHルールを削除（常に実行）
+      - name: Remove temporary SSH rule from Security Group
+        if: always()
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr $IP/32
