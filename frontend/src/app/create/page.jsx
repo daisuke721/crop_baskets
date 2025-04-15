@@ -25,7 +25,6 @@ const Page = () => {
     name: '',
     crop_id: '',
     variety: '',
-    origin: '',
     harvestMonth: '',
     harvestDay: '',
     capacity: '',
@@ -62,8 +61,62 @@ const Page = () => {
       });
   }, []);
 
+  // バリデーションの追加
+  const [errors, setErrors] = useState({});
+
   // 出品処理
   const handleSubmit = async () => {
+    // バリデーションを追加
+    const newErrors = {};
+
+    // 画像のバリデーション
+    if (images.length === 0) {
+      newErrors.images = '画像を登録してください';
+    }
+
+    // 商品名のバリデーション
+    if (!formData.name.trim()) {
+      newErrors.name = '商品名を入力してください';
+    }
+
+    // 作物のバリデーション
+    if (!formData.crop_id) {
+      newErrors.crop_id = '作物名を選択後、産地名を選択してください';
+    }
+
+    // 品種のバリデーション
+    if (!formData.variety) {
+      newErrors.variety = '品種名を入力してください';
+    }
+
+    if (!formData.harvestMonth || !formData.harvestDay) {
+      newErrors.harvest_day = '収穫日を入力してください';
+    }
+
+    // 容量のバリデーション
+    if (!formData.capacity || Number(formData.capacity) <= 0) {
+      newErrors.capacity = '容量は1以上の数字で入力してください';
+    }
+
+    // 価格のバリデーション
+    if (!formData.price || Number(formData.price) <= 0) {
+      newErrors.price = '価格は1円以上で入力してください';
+    }
+
+    // 説明のバリデーション
+    if (!formData.description.trim()) {
+      newErrors.description = '商品の説明を入力してください';
+    }
+
+    // エラーがあれば表示&送信中止
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return false;
+    }
+
+    // バリデーションを通過 → エラークリア
+    setErrors({});
+
     const formDataToSend = new FormData();
 
     if (formData.harvestMonth && formData.harvestDay) {
@@ -73,7 +126,7 @@ const Page = () => {
     }
 
     Object.keys(formData).forEach((key) => {
-      if (key !== 'harvestMonth' && key !== 'harvestDay') {
+      if (key !== 'harvestMonth' && key !== 'harvestDay' && key !== 'origin') {
         formDataToSend.append(`commodity_crop[${key}]`, formData[key]);
       }
     });
@@ -85,9 +138,11 @@ const Page = () => {
     try {
       await createCommodityCrop(formDataToSend);
       alert('作物が出品されました！');
+      return true;
     } catch (error) {
       console.error('エラー:', error);
       alert('エラーが発生しました');
+      return false;
     }
   };
 
@@ -106,6 +161,8 @@ const Page = () => {
           />
         ))}
       </div>
+      {/* 画像のエラーメッセージを表示 */}
+      {errors && <p className="text-red-500 text-center mt-2">{errors.images}</p>}
       <div className="flex justify-center">
         <div className="flex justify-center pb-10 w-11/12 border-b border-gray-200">
           <label className="block w-44 mt-5 p-2 rounded-lg cursor-pointer text-center text-sprayGreen border border-sprayGreen font-noto">
@@ -127,6 +184,8 @@ const Page = () => {
               onChange={handleChange}
               className="font-roboto border p-3 rounded-md outline-none"
             />
+            {/* 商品名のエラーメッセージを表示 */}
+            {errors && <p className="text-red-500 text-center mt-2">{errors.name}</p>}
           </div>
           {/* 作物をAPIから取得 */}
           <div className="flex flex-col font-noto text-stone-700">
@@ -155,6 +214,8 @@ const Page = () => {
                 </option>
               ))}
             </select>
+            {/* 作物のエラーメッセージを表示 */}
+            {errors && <p className="text-red-500 text-center mt-2">{errors.crop_id}</p>}
           </div>
           {/* 品種名を入力 */}
           <div className="flex flex-col font-noto text-stone-700">
@@ -166,6 +227,8 @@ const Page = () => {
               onChange={handleChange}
               className="font-roboto border p-3 rounded-md outline-none"
             />
+            {/* 品種名のエラーメッセージを表示 */}
+            {errors && <p className="text-red-500 text-center mt-2">{errors.variety}</p>}
           </div>
           {/* 産地をAPIから取得 */}
           <div className="flex flex-col font-noto text-stone-700">
@@ -187,6 +250,8 @@ const Page = () => {
                 </option>
               ))}
             </select>
+            {/* 産地名のエラーメッセージを表示 */}
+            {errors && <p className="text-red-500 text-center mt-2">{errors.crop_id}</p>}
           </div>
           {/* 収穫日 */}
           <div className="flex flex-col font-noto text-stone-700">
@@ -223,6 +288,8 @@ const Page = () => {
                 <span>日</span>
               </div>
             </div>
+            {/* 収穫日のエラーメッセージを表示 */}
+            {errors && <p className="text-red-500 text-center mt-2">{errors.harvest_day}</p>}
           </div>
           {/* 容量を入力 */}
           <div className="flex flex-col font-noto text-stone-700">
@@ -237,8 +304,10 @@ const Page = () => {
               />
               <span className="font-noto text-stone-700">グラム</span>
             </div>
+            {/* 容量のエラーメッセージを表示 */}
+            {errors && <p className="text-red-500 text-center mt-2">{errors.capacity}</p>}
           </div>
-          {/* 金額を入力 */}
+          {/* 価格を入力 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>価格</label>
             <div className="space-x-2">
@@ -251,6 +320,8 @@ const Page = () => {
               />
               <span className="font-noto text-stone-700">円</span>
             </div>
+            {/* 価格のエラーメッセージを表示 */}
+            {errors && <p className="text-red-500 text-center mt-2">{errors.price}</p>}
           </div>
           {/* 説明文の入力 */}
           <div className="flex flex-col font-noto text-stone-700">
@@ -261,6 +332,8 @@ const Page = () => {
               onChange={handleChange}
               className="font-roboto border p-3 rounded-md outline-none resize-none h-60"
             />
+            {/* 商品説明のエラーメッセージを表示 */}
+            {errors && <p className="text-red-500 text-center mt-2">{errors.description}</p>}
           </div>
         </div>
       </div>
@@ -271,8 +344,11 @@ const Page = () => {
         <div className="flex justify-center py-8">
           <button
             onClick={async () => {
-              await handleSubmit();
-              handleHome();
+              const isSuccess = await handleSubmit();
+              // 成功時のみ遷移
+              if (isSuccess) {
+                handleHome();
+              }
             }}
             className="font-noto text-2xl bg-honey text-white px-10 py-3 rounded-lg"
           >
