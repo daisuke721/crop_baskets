@@ -4,6 +4,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { ja } from 'date-fns/locale';
+
 import { fetchCrops } from '../../lib/api/crops';
 import { createCommodityCrop } from '../../lib/api/commodityCrops';
 
@@ -25,8 +29,6 @@ const Page = () => {
     name: '',
     crop_id: '',
     variety: '',
-    harvestMonth: '',
-    harvestDay: '',
     capacity: '',
     price: '',
     description: '',
@@ -61,6 +63,9 @@ const Page = () => {
       });
   }, []);
 
+  // 収穫日用のカレンダー
+  const [harvestDate, setHarvestDate] = useState(null);
+
   // バリデーションの追加
   const [errors, setErrors] = useState({});
 
@@ -89,7 +94,8 @@ const Page = () => {
       newErrors.variety = '品種名を入力してください';
     }
 
-    if (!formData.harvestMonth || !formData.harvestDay) {
+    // 収穫日のバリデーション
+    if (!harvestDate) {
       newErrors.harvest_day = '収穫日を入力してください';
     }
 
@@ -119,10 +125,9 @@ const Page = () => {
 
     const formDataToSend = new FormData();
 
-    if (formData.harvestMonth && formData.harvestDay) {
-      const today = new Date();
-      const formattedHarvestDay = `${today.getFullYear()}-${String(formData.harvestMonth).padStart(2, '0')}-${String(formData.harvestDay).padStart(2, '0')}`;
-      formDataToSend.append('commodity_crop[harvest_day]', formattedHarvestDay);
+    if (harvestDate) {
+      const formatted = harvestDate.toISOString().split('T')[0];
+      formDataToSend.append('commodity_crop[harvest_day]', formatted);
     }
 
     Object.keys(formData).forEach((key) => {
@@ -256,38 +261,14 @@ const Page = () => {
           {/* 収穫日 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>収穫日</label>
-            <div className="flex space-x-5">
-              <div className="space-x-2">
-                <select
-                  name="harvestMonth"
-                  onChange={handleChange}
-                  className="font-roboto text-gray-400 border p-3 rounded-md outline-none"
-                >
-                  <option>ー</option>
-                  {[...Array(12).keys()].map((m) => (
-                    <option key={m + 1} value={m + 1}>
-                      {m + 1}
-                    </option>
-                  ))}
-                </select>
-                <span>月</span>
-              </div>
-              <div className="space-x-2">
-                <select
-                  name="harvestDay"
-                  onChange={handleChange}
-                  className="font-roboto text-gray-400 border p-3 rounded-md outline-none"
-                >
-                  <option>ー</option>
-                  {[...Array(31).keys()].map((d) => (
-                    <option key={d + 1} value={d + 1}>
-                      {d + 1}
-                    </option>
-                  ))}
-                </select>
-                <span>日</span>
-              </div>
-            </div>
+            <DatePicker
+              selected={harvestDate}
+              onChange={(data) => setHarvestDate(data)}
+              dateFormat="yyyy-MM-dd"
+              placeholderText="月/日"
+              locale={ja}
+              className="font-roboto border p-3 rounded-md outline-none"
+            />
             {/* 収穫日のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.harvest_day}</p>}
           </div>
@@ -302,7 +283,7 @@ const Page = () => {
                 onChange={handleChange}
                 className="font-roboto border p-3 rounded-md outline-none"
               />
-              <span className="font-noto text-stone-700">グラム</span>
+              <span className="font-noto text-stone-700">kg</span>
             </div>
             {/* 容量のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.capacity}</p>}
