@@ -10,6 +10,7 @@ import { ja } from 'date-fns/locale';
 
 import { fetchCrops } from '../../lib/api/crops';
 import { createCommodityCrop } from '../../lib/api/commodityCrops';
+import { SuccessModal } from '../../components/SuccessModal';
 
 const Page = () => {
   const router = useRouter();
@@ -38,6 +39,23 @@ const Page = () => {
     description: '',
   });
 
+  // 画像やフォームをクリア
+  const resetForm = () => {
+    setImages([]);
+    setFormData({
+      name: '',
+      crop_id: '',
+      variety: '',
+      capacity: '',
+      price: '',
+      description: '',
+    });
+    setHarvestDate(null);
+    setSelectedCrop('');
+    setOrigins([]);
+    setErrors({});
+  };
+
   // 入力フィールドの変更
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -58,8 +76,8 @@ const Page = () => {
       .then((data) => {
         setCrops(data);
 
-        // 作物名のリストをユニークにする
-        const uniqueCropNames = [...new Set(data.map((crop) => crop.name))];
+        // 作物名のリストをユニークにする、五十音順にする
+        const uniqueCropNames = [...new Set(data.map((crop) => crop.name))].sort((a, b) => a.localeCompare(b, 'ja'));
         setCropNames(uniqueCropNames);
       })
       .catch((error) => {
@@ -72,6 +90,9 @@ const Page = () => {
 
   // バリデーションの追加
   const [errors, setErrors] = useState({});
+
+  // モーダルの表示
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   // 出品処理
   const handleSubmit = async () => {
@@ -126,7 +147,7 @@ const Page = () => {
 
     // バリデーションを通過 → エラークリア
     setErrors({});
-
+    // フォームのデータを作る
     const formDataToSend = new FormData();
 
     if (harvestDate) {
@@ -146,7 +167,6 @@ const Page = () => {
 
     try {
       await createCommodityCrop(formDataToSend);
-      alert('作物が出品されました！');
       return true;
     } catch (error) {
       console.error('エラー:', error);
@@ -207,6 +227,7 @@ const Page = () => {
             <input
               type="text"
               name="name"
+              value={formData.name}
               placeholder="商品名を入力してください"
               onChange={handleChange}
               className="font-roboto border p-3 rounded-md outline-none"
@@ -214,6 +235,7 @@ const Page = () => {
             {/* 商品名のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.name}</p>}
           </div>
+
           {/* 作物をAPIから取得 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>作物名</label>
@@ -223,16 +245,19 @@ const Page = () => {
               onChange={(e) => {
                 setSelectedCrop(e.target.value);
 
-                // 選択された作物名に対応する産地リストを取得
+                // 選択された作物名に対応する産地リストを取得、作物名を五十音順にする
                 const filteredOrigins = crops
                   .filter((crop) => crop.name === e.target.value)
-                  .map((crop) => ({ id: crop.id, producing_area: crop.producing_area }));
-
+                  .map((crop) => ({ id: crop.id, producing_area: crop.producing_area }))
+                  .sort((a, b) => a.producing_area.localeCompare(b.producing_area, 'ja'));
                 setOrigins(filteredOrigins);
                 // 産地リセット
                 setFormData({ ...formData, crop_id: '', origin: '' });
               }}
-              className="font-roboto text-gray-400 border p-3 rounded-md outline-none"
+              // 三項演算子を使いフォーム内が入力され黒色に、入力されていない場合はプレースホルダーのグレー
+              className={`font-roboto border p-3 rounded-md outline-none ${
+                selectedCrop ? 'text-black' : 'text-gray-400'
+              }`}
             >
               <option value="">作物を選択してください</option>
               {cropNames.map((name, index) => (
@@ -244,12 +269,14 @@ const Page = () => {
             {/* 作物のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.crop_id}</p>}
           </div>
+
           {/* 品種名を入力 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>品種名</label>
             <input
               type="text"
               name="variety"
+              value={formData.variety}
               placeholder="品種名を入力してください"
               onChange={handleChange}
               className="font-roboto border p-3 rounded-md outline-none"
@@ -257,6 +284,7 @@ const Page = () => {
             {/* 品種名のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.variety}</p>}
           </div>
+
           {/* 産地をAPIから取得 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>産地</label>
@@ -268,7 +296,9 @@ const Page = () => {
                 setFormData({ ...formData, crop_id: e.target.value, origin: selectedCrop?.producing_area || '' });
               }}
               disabled={!selectedCrop}
-              className="font-roboto text-gray-400 border p-3 rounded-md outline-none"
+              className={`font-roboto border p-3 rounded-md outline-none ${
+                formData.crop_id ? 'text-black' : 'text-gray-400'
+              }`}
             >
               <option value="">産地を選択してください</option>
               {origins.map((crop) => (
@@ -280,6 +310,7 @@ const Page = () => {
             {/* 産地名のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.crop_id}</p>}
           </div>
+
           {/* 収穫日 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>収穫日</label>
@@ -294,6 +325,7 @@ const Page = () => {
             {/* 収穫日のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.harvest_day}</p>}
           </div>
+
           {/* 容量を入力 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>容量</label>
@@ -301,6 +333,8 @@ const Page = () => {
               <input
                 type="number"
                 name="capacity"
+                value={formData.capacity}
+                min={0}
                 placeholder="入力してください"
                 onChange={handleChange}
                 className="font-roboto border p-3 rounded-md outline-none"
@@ -310,6 +344,7 @@ const Page = () => {
             {/* 容量のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.capacity}</p>}
           </div>
+
           {/* 価格を入力 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>価格</label>
@@ -317,6 +352,8 @@ const Page = () => {
               <input
                 type="number"
                 name="price"
+                value={formData.price}
+                min={0}
                 placeholder="入力してください"
                 onChange={handleChange}
                 className="font-roboto border p-3 rounded-md outline-none"
@@ -326,11 +363,13 @@ const Page = () => {
             {/* 価格のエラーメッセージを表示 */}
             {errors && <p className="text-red-500 text-center mt-2">{errors.price}</p>}
           </div>
+
           {/* 説明文の入力 */}
           <div className="flex flex-col font-noto text-stone-700">
             <label>商品の説明</label>
             <textarea
               name="description"
+              value={formData.description}
               placeholder="商品の説明を入力してください"
               onChange={handleChange}
               className="font-roboto border p-3 rounded-md outline-none resize-none h-60"
@@ -343,22 +382,33 @@ const Page = () => {
 
       <div className="h-24"></div>
 
+      {/* 出品ボタンフッター */}
       <div className="footer-button">
-        <div className="flex justify-center py-8">
+        <div className="flex justify-center py-4">
           <button
             onClick={async () => {
               const isSuccess = await handleSubmit();
               // 成功時のみ遷移
               if (isSuccess) {
-                handleHome();
+                setIsSuccessModalOpen(true);
               }
             }}
-            className="font-noto text-2xl bg-honey text-white px-10 py-3 rounded-lg hover:opacity-65"
+            className="font-noto text-2xl bg-honey text-white px-8 py-3 rounded-lg hover:opacity-85 transition"
           >
             出品する
           </button>
         </div>
       </div>
+
+      {/* モーダルを表示 */}
+      <SuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => {
+          setIsSuccessModalOpen(false);
+          resetForm();
+        }}
+        onGoHome={handleHome}
+      />
     </>
   );
 };
