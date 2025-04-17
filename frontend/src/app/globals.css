@@ -19,7 +19,7 @@
 
 /* フッターボタンの固定 */
 .footer-button {
-  @apply absolute bottom-0 left-0 w-full border-t border-gray-200 bg-white;
+  @apply absolute bottom-0 left-0 w-full border-t border-gray-200 bg-white h-24;
 }
 
 /* 全体のスクロールを有効化 */
