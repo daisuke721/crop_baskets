@@ -177,209 +177,212 @@ const Page = () => {
 
   return (
     <>
-      <div className="w-full px-10 pt-5">
-        <h2 className="text-center font-noto font-bold text-stone-700 mb-4">商品画像一覧</h2>
-        <div className="flex overflow-x-auto whitespace-nowrap gap-4 px-4 py-2 border rounded-lg bg-white shadow-sm min-h-[100px]">
-          {/* URL.createObjectURL(img)で画像のプレビューを表示 */}
-          {images.length > 0 ? (
-            images.map((img, index) => (
-              <div key={index} className="relative w-20 h-20 shrink-0">
-                {/* プレビュー画像 */}
-                <Image
-                  src={URL.createObjectURL(img)}
-                  alt={`作物画像${index + 1}`}
-                  fill
-                  className="object-cover rounded-md border"
-                />
-                {/* 削除ボタン */}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(index)}
-                  className="font-roboto absolute top-[-6px] right-[-6px] bg-red-500 text-white rounded-full w-5 h-5 text-xs items-center justify-center hover:bg-red-600"
-                >
-                  ×
-                </button>
+      <div className="content-area">
+        <div className="w-full px-10 pt-5">
+          <h2 className="text-center font-noto font-bold text-stone-700 mb-4">商品画像一覧</h2>
+          <div className="flex overflow-x-auto whitespace-nowrap gap-4 px-4 py-2 border rounded-lg bg-white shadow-sm min-h-[100px]">
+            {/* URL.createObjectURL(img)で画像のプレビューを表示 */}
+            {images.length > 0 ? (
+              images.map((img, index) => (
+                <div key={index} className="relative w-20 h-20 shrink-0">
+                  {/* プレビュー画像 */}
+                  <Image
+                    src={URL.createObjectURL(img)}
+                    alt={`作物画像${index + 1}`}
+                    fill
+                    className="object-cover rounded-md border"
+                  />
+                  {/* 削除ボタン */}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    className="font-roboto absolute top-[-6px] right-[-6px] bg-red-500 text-white rounded-full w-5 h-5 text-xs items-center justify-center hover:bg-red-600"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))
+            ) : (
+              <div className="flex items-center justify-center w-full">
+                <p className="text-stone-400">画像がまだ選択されていません</p>
               </div>
-            ))
-          ) : (
-            <div className="flex items-center justify-center w-full">
-              <p className="text-stone-400">画像がまだ選択されていません</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-      {/* 画像のエラーメッセージを表示 */}
-      {errors && <p className="text-red-500 text-center mt-2">{errors.images}</p>}
-      <div className="flex justify-center">
-        <div className="flex justify-center pb-10 w-11/12 border-b border-gray-200">
-          <label className="block w-44 mt-5 p-2 rounded-lg cursor-pointer text-center text-sprayGreen border border-sprayGreen font-noto hover:bg-sprayGreen hover:text-white transition">
-            商品画像を登録する
-            <input type="file" multiple className="hidden" onChange={handleImageUpload} />
-          </label>
+        {/* 画像のエラーメッセージを表示 */}
+        {errors && <p className="text-red-500 text-center mt-2">{errors.images}</p>}
+        <div className="flex justify-center">
+          <div className="flex justify-center pb-10 w-11/12 border-b border-gray-200">
+            <label className="block w-44 mt-5 p-2 rounded-lg cursor-pointer text-center text-sprayGreen border border-sprayGreen font-noto hover:bg-sprayGreen hover:text-white transition">
+              商品画像を登録する
+              <input type="file" multiple className="hidden" onChange={handleImageUpload} />
+            </label>
+          </div>
         </div>
-      </div>
 
-      <div className="flex justify-center mt-20">
-        <div className="flex flex-col w-96 space-y-8">
-          {/* 商品名を入力 */}
-          <div className="flex flex-col font-noto text-stone-700">
-            <label>商品名</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              placeholder="商品名を入力してください"
-              onChange={handleChange}
-              className="font-roboto border p-3 rounded-md outline-none"
-            />
-            {/* 商品名のエラーメッセージを表示 */}
-            {errors && <p className="text-red-500 text-center mt-2">{errors.name}</p>}
-          </div>
-
-          {/* 作物をAPIから取得 */}
-          <div className="flex flex-col font-noto text-stone-700">
-            <label>作物名</label>
-            <select
-              name="crop_name"
-              value={selectedCrop}
-              onChange={(e) => {
-                setSelectedCrop(e.target.value);
-
-                // 選択された作物名に対応する産地リストを取得、作物名を五十音順にする
-                const filteredOrigins = crops
-                  .filter((crop) => crop.name === e.target.value)
-                  .map((crop) => ({ id: crop.id, producing_area: crop.producing_area }))
-                  .sort((a, b) => a.producing_area.localeCompare(b.producing_area, 'ja'));
-                setOrigins(filteredOrigins);
-                // 産地リセット
-                setFormData({ ...formData, crop_id: '', origin: '' });
-              }}
-              // 三項演算子を使いフォーム内が入力され黒色に、入力されていない場合はプレースホルダーのグレー
-              className={`font-roboto border p-3 rounded-md outline-none ${
-                selectedCrop ? 'text-black' : 'text-gray-400'
-              }`}
-            >
-              <option value="">作物を選択してください</option>
-              {cropNames.map((name, index) => (
-                <option key={index} value={name}>
-                  {name}
-                </option>
-              ))}
-            </select>
-            {/* 作物のエラーメッセージを表示 */}
-            {errors && <p className="text-red-500 text-center mt-2">{errors.crop_id}</p>}
-          </div>
-
-          {/* 品種名を入力 */}
-          <div className="flex flex-col font-noto text-stone-700">
-            <label>品種名</label>
-            <input
-              type="text"
-              name="variety"
-              value={formData.variety}
-              placeholder="品種名を入力してください"
-              onChange={handleChange}
-              className="font-roboto border p-3 rounded-md outline-none"
-            />
-            {/* 品種名のエラーメッセージを表示 */}
-            {errors && <p className="text-red-500 text-center mt-2">{errors.variety}</p>}
-          </div>
-
-          {/* 産地をAPIから取得 */}
-          <div className="flex flex-col font-noto text-stone-700">
-            <label>産地</label>
-            <select
-              name="crop_id"
-              value={formData.crop_id}
-              onChange={(e) => {
-                const selectedCrop = origins.find((crop) => crop.id === parseInt(e.target.value, 10));
-                setFormData({ ...formData, crop_id: e.target.value, origin: selectedCrop?.producing_area || '' });
-              }}
-              disabled={!selectedCrop}
-              className={`font-roboto border p-3 rounded-md outline-none ${
-                formData.crop_id ? 'text-black' : 'text-gray-400'
-              }`}
-            >
-              <option value="">産地を選択してください</option>
-              {origins.map((crop) => (
-                <option key={crop.id} value={crop.id}>
-                  {crop.producing_area}
-                </option>
-              ))}
-            </select>
-            {/* 産地名のエラーメッセージを表示 */}
-            {errors && <p className="text-red-500 text-center mt-2">{errors.crop_id}</p>}
-          </div>
-
-          {/* 収穫日 */}
-          <div className="flex flex-col font-noto text-stone-700">
-            <label>収穫日</label>
-            <DatePicker
-              selected={harvestDate}
-              onChange={(data) => setHarvestDate(data)}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="月/日"
-              locale={ja}
-              className="font-roboto border p-3 rounded-md outline-none"
-            />
-            {/* 収穫日のエラーメッセージを表示 */}
-            {errors && <p className="text-red-500 text-center mt-2">{errors.harvest_day}</p>}
-          </div>
-
-          {/* 容量を入力 */}
-          <div className="flex flex-col font-noto text-stone-700">
-            <label>容量</label>
-            <div className="space-x-2">
+        <div className="flex justify-center mt-20">
+          <div className="flex flex-col w-96 space-y-8">
+            {/* 商品名を入力 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>商品名</label>
               <input
-                type="number"
-                name="capacity"
-                value={formData.capacity}
-                min={0}
-                placeholder="入力してください"
+                type="text"
+                name="name"
+                value={formData.name}
+                placeholder="商品名を入力してください"
                 onChange={handleChange}
                 className="font-roboto border p-3 rounded-md outline-none"
               />
-              <span className="font-noto text-stone-700">kg</span>
+              {/* 商品名のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.name}</p>}
             </div>
-            {/* 容量のエラーメッセージを表示 */}
-            {errors && <p className="text-red-500 text-center mt-2">{errors.capacity}</p>}
-          </div>
 
-          {/* 価格を入力 */}
-          <div className="flex flex-col font-noto text-stone-700">
-            <label>価格</label>
-            <div className="space-x-2">
+            {/* 作物をAPIから取得 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>作物名</label>
+              <select
+                name="crop_name"
+                value={selectedCrop}
+                onChange={(e) => {
+                  setSelectedCrop(e.target.value);
+
+                  // 選択された作物名に対応する産地リストを取得、作物名を五十音順にする
+                  const filteredOrigins = crops
+                    .filter((crop) => crop.name === e.target.value)
+                    .map((crop) => ({ id: crop.id, producing_area: crop.producing_area }))
+                    .sort((a, b) => a.producing_area.localeCompare(b.producing_area, 'ja'));
+                  setOrigins(filteredOrigins);
+                  // 産地リセット
+                  setFormData({ ...formData, crop_id: '', origin: '' });
+                }}
+                // 三項演算子を使いフォーム内が入力され黒色に、入力されていない場合はプレースホルダーのグレー
+                className={`font-roboto border p-3 rounded-md outline-none ${
+                  selectedCrop ? 'text-black' : 'text-gray-400'
+                }`}
+              >
+                <option value="">作物を選択してください</option>
+                {cropNames.map((name, index) => (
+                  <option key={index} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+              {/* 作物のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.crop_id}</p>}
+            </div>
+
+            {/* 品種名を入力 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>品種名</label>
               <input
-                type="number"
-                name="price"
-                value={formData.price}
-                min={0}
-                placeholder="入力してください"
+                type="text"
+                name="variety"
+                value={formData.variety}
+                placeholder="品種名を入力してください"
                 onChange={handleChange}
                 className="font-roboto border p-3 rounded-md outline-none"
               />
-              <span className="font-noto text-stone-700">円</span>
+              {/* 品種名のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.variety}</p>}
             </div>
-            {/* 価格のエラーメッセージを表示 */}
-            {errors && <p className="text-red-500 text-center mt-2">{errors.price}</p>}
-          </div>
 
-          {/* 説明文の入力 */}
-          <div className="flex flex-col font-noto text-stone-700">
-            <label>商品の説明</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              placeholder="商品の説明を入力してください"
-              onChange={handleChange}
-              className="font-roboto border p-3 rounded-md outline-none resize-none h-60"
-            />
-            {/* 商品説明のエラーメッセージを表示 */}
-            {errors && <p className="text-red-500 text-center mt-2">{errors.description}</p>}
+            {/* 産地をAPIから取得 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>産地</label>
+              <select
+                name="crop_id"
+                value={formData.crop_id}
+                onChange={(e) => {
+                  const selectedCrop = origins.find((crop) => crop.id === parseInt(e.target.value, 10));
+                  setFormData({ ...formData, crop_id: e.target.value, origin: selectedCrop?.producing_area || '' });
+                }}
+                disabled={!selectedCrop}
+                className={`font-roboto border p-3 rounded-md outline-none ${
+                  formData.crop_id ? 'text-black' : 'text-gray-400'
+                }`}
+              >
+                <option value="">産地を選択してください</option>
+                {origins.map((crop) => (
+                  <option key={crop.id} value={crop.id}>
+                    {crop.producing_area}
+                  </option>
+                ))}
+              </select>
+              {/* 産地名のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.crop_id}</p>}
+            </div>
+
+            {/* 収穫日 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>収穫日</label>
+              <DatePicker
+                selected={harvestDate}
+                onChange={(data) => setHarvestDate(data)}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="月/日"
+                locale={ja}
+                className="font-roboto border p-3 rounded-md outline-none"
+              />
+              {/* 収穫日のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.harvest_day}</p>}
+            </div>
+
+            {/* 容量を入力 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>容量</label>
+              <div className="space-x-2">
+                <input
+                  type="number"
+                  name="capacity"
+                  value={formData.capacity}
+                  min={0}
+                  placeholder="入力してください"
+                  onChange={handleChange}
+                  className="font-roboto border p-3 rounded-md outline-none"
+                />
+                <span className="font-noto text-stone-700">kg</span>
+              </div>
+              {/* 容量のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.capacity}</p>}
+            </div>
+
+            {/* 価格を入力 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>価格</label>
+              <div className="space-x-2">
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  min={0}
+                  placeholder="入力してください"
+                  onChange={handleChange}
+                  className="font-roboto border p-3 rounded-md outline-none"
+                />
+                <span className="font-noto text-stone-700">円</span>
+              </div>
+              {/* 価格のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.price}</p>}
+            </div>
+
+            {/* 説明文の入力 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>商品の説明</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                placeholder="商品の説明を入力してください"
+                onChange={handleChange}
+                className="font-roboto border p-3 rounded-md outline-none resize-none h-60"
+              />
+              {/* 商品説明のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.description}</p>}
+            </div>
           </div>
         </div>
       </div>
 
+      {/* ヘッダーの縦幅と同じ高さをブロックを追加し、ヘッダーが被らないようにする */}
       <div className="h-24"></div>
 
       {/* 出品ボタンフッター */}
