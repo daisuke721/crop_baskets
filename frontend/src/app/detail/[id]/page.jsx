@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import { fetchCommodityCropById } from '../../../lib/api/commodityCrops';
 import { addToCart } from '../../../lib/api/cart';
+import { BottomFooterLayout } from '../../../style/BottomFooterLayout';
 
 const Page = ({ params }) => {
   const router = useRouter();
@@ -93,21 +94,22 @@ const Page = ({ params }) => {
         </div>
       </div>
 
-      <div className="h-24"></div>
-
-      <div className="footer-button">
-        <div className="flex items-center justify-center py-8 gap-5">
-          <button onClick={handleOrder} className="font-noto text-xl bg-sprayGreen text-white px-5 py-3 rounded-lg">
+      <BottomFooterLayout>
+        <div className="items-center space-x-5">
+          <button
+            onClick={handleOrder}
+            className="font-noto text-xl bg-sprayGreen text-white border border-sprayGreen px-5 py-3 rounded-lg hover:bg-white hover:text-sprayGreen transition"
+          >
             購入手続きへ
           </button>
           <button
             onClick={handleAddToCart}
-            className="font-noto text-xl bg-white text-honey border border-honey px-2 py-3 rounded-lg"
+            className="font-noto text-xl bg-white text-honey border border-honey px-2 py-3 rounded-lg hover:bg-honey hover:text-white transition"
           >
             カートに入れる
           </button>
         </div>
-      </div>
+      </BottomFooterLayout>
     </>
   );
 };

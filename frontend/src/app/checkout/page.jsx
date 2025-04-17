@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createOrder, fetchOrderData } from '../../lib/api/orders';
+import { BottomFooterLayout } from '../../style/BottomFooterLayout';
 
 const Page = () => {
   const router = useRouter();
@@ -80,15 +81,14 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="h-24"></div>
-
-      <div className="footer-button">
-        <div className="flex items-center justify-center py-8 gap-5">
-          <button onClick={handlePurchase} className="font-noto text-xl bg-honey text-white px-5 py-3 rounded-lg">
-            購入する
-          </button>
-        </div>
-      </div>
+      <BottomFooterLayout>
+        <button
+          onClick={handlePurchase}
+          className="font-noto text-xl bg-honey text-white px-8 py-3 rounded-lg hover:opacity-85 transition"
+        >
+          購入する
+        </button>
+      </BottomFooterLayout>
     </>
   );
 };

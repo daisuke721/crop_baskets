@@ -11,6 +11,7 @@ import { ja } from 'date-fns/locale';
 import { fetchCrops } from '../../lib/api/crops';
 import { createCommodityCrop } from '../../lib/api/commodityCrops';
 import { SuccessModal } from '../../components/SuccessModal';
+import { BottomFooterLayout } from '../../style/BottomFooterLayout';
 
 const Page = () => {
   const router = useRouter();
@@ -382,26 +383,21 @@ const Page = () => {
         </div>
       </div>
 
-      {/* ヘッダーの縦幅と同じ高さをブロックを追加し、ヘッダーが被らないようにする */}
-      <div className="h-24"></div>
-
       {/* 出品ボタンフッター */}
-      <div className="footer-button">
-        <div className="flex justify-center py-4">
-          <button
-            onClick={async () => {
-              const isSuccess = await handleSubmit();
-              // 成功時のみ遷移
-              if (isSuccess) {
-                setIsSuccessModalOpen(true);
-              }
-            }}
-            className="font-noto text-2xl bg-honey text-white px-8 py-3 rounded-lg hover:opacity-85 transition"
-          >
-            出品する
-          </button>
-        </div>
-      </div>
+      <BottomFooterLayout>
+        <button
+          onClick={async () => {
+            const isSuccess = await handleSubmit();
+            // 成功時のみ遷移
+            if (isSuccess) {
+              setIsSuccessModalOpen(true);
+            }
+          }}
+          className="font-noto text-2xl bg-honey text-white px-8 py-3 rounded-lg hover:opacity-85 transition"
+        >
+          出品する
+        </button>
+      </BottomFooterLayout>
 
       {/* モーダルを表示 */}
       <SuccessModal
