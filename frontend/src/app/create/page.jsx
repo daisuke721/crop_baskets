@@ -11,7 +11,7 @@ import { ja } from 'date-fns/locale';
 import { fetchCrops } from '../../lib/api/crops';
 import { createCommodityCrop } from '../../lib/api/commodityCrops';
 import { SuccessModal } from '../../components/SuccessModal';
-import { BottomFooterLayout } from '../../style/BottomFooterLayout';
+import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
 
 const Page = () => {
   const router = useRouter();
@@ -382,7 +382,8 @@ const Page = () => {
           </div>
         </div>
       </div>
-
+      {/* <div className="h-24"></div> */}
+      {/* <div className="flex justify-center py-4"></div> */}
       {/* 出品ボタンフッター */}
       <BottomFooterLayout>
         <button

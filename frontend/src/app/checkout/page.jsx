@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createOrder, fetchOrderData } from '../../lib/api/orders';
-import { BottomFooterLayout } from '../../style/BottomFooterLayout';
+import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
 
 const Page = () => {
   const router = useRouter();
