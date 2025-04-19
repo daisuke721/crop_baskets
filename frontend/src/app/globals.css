@@ -14,7 +14,7 @@
 
 /* スクロール可能エリア */
 .content-area {
-  @apply flex-1 overflow-y-auto pb-20;
+  @apply flex-1 overflow-y-auto pb-12;
 }
 
 /* フッターボタンの固定 */
