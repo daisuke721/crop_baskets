@@ -10,8 +10,10 @@ import { ja } from 'date-fns/locale';
 
 import { fetchCrops } from '../../lib/api/crops';
 import { createCommodityCrop } from '../../lib/api/commodityCrops';
-import { SuccessModal } from '../../components/SuccessModal';
+
 import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
+import { ModalLayout } from '../../Layout/ModalLayout';
+import { CreateModalContent } from '../../components/CreateModalContent';
 
 const Page = () => {
   const router = useRouter();
@@ -93,7 +95,7 @@ const Page = () => {
   const [errors, setErrors] = useState({});
 
   // モーダルの表示
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // 出品処理
   const handleSubmit = async () => {
@@ -391,7 +393,7 @@ const Page = () => {
             const isSuccess = await handleSubmit();
             // 成功時のみ遷移
             if (isSuccess) {
-              setIsSuccessModalOpen(true);
+              setIsCreateModalOpen(true);
             }
           }}
           className="font-noto text-2xl bg-honey text-white px-8 py-3 rounded-lg hover:opacity-85 transition"
@@ -401,14 +403,15 @@ const Page = () => {
       </BottomFooterLayout>
 
       {/* モーダルを表示 */}
-      <SuccessModal
-        isOpen={isSuccessModalOpen}
-        onClose={() => {
-          setIsSuccessModalOpen(false);
-          resetForm();
-        }}
-        onGoHome={handleHome}
-      />
+      <ModalLayout isOpen={isCreateModalOpen}>
+        <CreateModalContent
+          onClose={() => {
+            setIsCreateModalOpen(false);
+            resetForm();
+          }}
+          onGoHome={handleHome}
+        />
+      </ModalLayout>
     </>
   );
 };
