@@ -10,8 +10,9 @@ import { BottomFooterLayout } from '../../../Layout/BottomFooterLayout';
 
 const Page = ({ params }) => {
   const router = useRouter();
+  // 1つの商品作物を購入時にはsingle_purchase_idというクエリパラメータを持たせる
   const handleOrder = () => {
-    router.push('/checkout');
+    router.push(`/checkout?single_purchase_id=${commodityCrop.id}`);
   };
 
   const [commodityCrop, setCommodityCrop] = useState(null);
