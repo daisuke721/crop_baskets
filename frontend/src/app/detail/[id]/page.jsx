@@ -7,6 +7,8 @@ import { addToCart } from '../../../lib/api/cart';
 
 import { DetailImagesSlider } from '../../../components/DetailImagesSlider';
 import { BottomFooterLayout } from '../../../Layout/BottomFooterLayout';
+import { ModalLayout } from '../../../Layout/ModalLayout';
+import { CartModalContent } from '../../../components/CartModalContent';
 
 const Page = ({ params }) => {
   const router = useRouter();
@@ -18,6 +20,9 @@ const Page = ({ params }) => {
   const [commodityCrop, setCommodityCrop] = useState(null);
   const resolvedParams = use(params);
   const { id } = resolvedParams;
+
+  // モーダルを表示
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
   useEffect(() => {
     const loadCommodityCrop = async () => {
@@ -37,8 +42,7 @@ const Page = ({ params }) => {
     if (!commodityCrop) return;
 
     await addToCart(commodityCrop.id, commodityCrop.price);
-    alert(`${commodityCrop.name} をカートに追加しました！`);
-    router.push('/cart');
+    setIsCartModalOpen(true);
   };
 
   if (!commodityCrop) return <p>読み込み中...</p>;
@@ -115,6 +119,20 @@ const Page = ({ params }) => {
           </button>
         </div>
       </BottomFooterLayout>
+
+      {/* カートボタンを押下されたらモーダルが開く */}
+      <ModalLayout isOpen={isCartModalOpen}>
+        <CartModalContent
+          onGoList={() => {
+            setIsCartModalOpen(false);
+            router.push('/list');
+          }}
+          onGoCart={() => {
+            setIsCartModalOpen(false);
+            router.push('/cart');
+          }}
+        />
+      </ModalLayout>
     </>
   );
 };
