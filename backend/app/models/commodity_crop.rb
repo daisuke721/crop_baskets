@@ -4,8 +4,7 @@ class CommodityCrop < ApplicationRecord
   has_many :commodity_crop_images, dependent: :destroy
 
   # フィールドのバリデーション
-  validates :name,presence: true
-  validates :crop_id, presence: true
+  validates :name, presence: true
   validates :variety, presence: true
   validates :harvest_day, presence: true
   validates :capacity, numericality: { greater_than: 0 }

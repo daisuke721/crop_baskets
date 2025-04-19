@@ -21,7 +21,7 @@ class Api::V1::CommodityCropsController < ApplicationController
 
     if commodity_crop.save
       # 画像が送信されたら画像があるかpresent?で確認しeach文で1つずつcommodity_crop_imagesに保存
-      if params.dig(:commodity_crop, :images).present?
+      if params.dig(:commodity_crop, :images).blank?
         params[:commodity_crop][:images].each do |image|
           # commodity_crop_images.create で CommodityCropImage レコードを作成
           commodity_crop_image = commodity_crop.commodity_crop_images.create
