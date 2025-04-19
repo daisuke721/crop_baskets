@@ -4,7 +4,9 @@ import { useRouter } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import { fetchCommodityCropById } from '../../../lib/api/commodityCrops';
 import { addToCart } from '../../../lib/api/cart';
-import { BottomFooterLayout } from '../../../style/BottomFooterLayout';
+
+import { DetailImagesSlider } from '../../../components/DetailImagesSlider';
+import { BottomFooterLayout } from '../../../Layout/BottomFooterLayout';
 
 const Page = ({ params }) => {
   const router = useRouter();
@@ -43,18 +45,20 @@ const Page = ({ params }) => {
   return (
     <>
       <div className="content-area">
-        <div className="px-5 my-14">
-          <img
+        <div className="px-5 mt-14">
+          {/* <img
             src={commodityCrop.commodity_crop_images[0].image_url}
             alt="商品画像"
             className="w-full h-80 object-cover"
-          />
+          /> */}
+          {/* 複数の写真を表示できるようにスライダーで実装 */}
+          <DetailImagesSlider images={commodityCrop.commodity_crop_images} />
           <h1 className="text-4xl font-noto font-bold my-5">{commodityCrop.name}</h1>
           <div className="px-3 py-5">
             <div className="flex justify-between items-center border-b pb-1">
               <div className="flex items-center font-roboto text-2xl">
                 <p>{commodityCrop.capacity}</p>
-                <p>g</p>
+                <p>kg</p>
               </div>
               <div className="flex items-center font-robot text-2xl">
                 <p>¥</p>
