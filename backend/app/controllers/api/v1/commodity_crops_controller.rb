@@ -15,13 +15,13 @@ class Api::V1::CommodityCropsController < ApplicationController
     commodity_crop = CommodityCrop.new(commodity_crop_params)
 
     # 保存前に画像がなければエラーを返す
-    unless params.dig(:commodity_crop, :images).present?
+    if params.dig(:commodity_crop, :images).blank?
       return render json: { errors: ["画像を登録してください"] }, status: :unprocessable_entity
     end
 
     if commodity_crop.save
       # 画像が送信されたら画像があるかpresent?で確認しeach文で1つずつcommodity_crop_imagesに保存
-      if params.dig(:commodity_crop, :images).blank?
+      if params.dig(:commodity_crop, :images).present?
         params[:commodity_crop][:images].each do |image|
           # commodity_crop_images.create で CommodityCropImage レコードを作成
           commodity_crop_image = commodity_crop.commodity_crop_images.create
