@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchCartItems, removeCartItem } from '../../lib/api/cart';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { BottomFooterLayout } from '../../style/BottomFooterLayout';
+import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
 
 const Page = () => {
   const router = useRouter();
