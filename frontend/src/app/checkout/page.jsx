@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createOrder, fetchOrderData } from '../../lib/api/orders';
-import { fetchCommodityCropById } from '../../lib/api/commodityCrops';
+import { deleteCommodityCrop, fetchCommodityCropById } from '../../lib/api/commodityCrops';
 import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
 
 const Page = () => {
@@ -56,9 +56,14 @@ const Page = () => {
       // 今は、機能しない
       if (singlePurchaseId) {
         await createOrder({ single_purchase_id: singlePurchaseId });
+
+        // 購入した1つの商品作物を削除
+        await deleteCommodityCrop(singlePurchaseId);
       } else {
         // カートで購入
         await createOrder();
+        // カート内で購入された全ての商品作物を削除 Promise allを使うことにより一括削除を行える
+        await Promise.all(cartItems.map((item) => deleteCommodityCrop(item.commodity_crop.id)));
       }
       // 購入完了後は完了ページに遷移
       router.push('/complete');
