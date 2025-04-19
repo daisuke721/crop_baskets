@@ -57,12 +57,12 @@ const Page = ({ params }) => {
           <div className="px-3 py-5">
             <div className="flex justify-between items-center border-b pb-1">
               <div className="flex items-center font-roboto text-2xl">
-                <p>{commodityCrop.capacity}</p>
+                <p>{commodityCrop.capacity.toLocaleString()}</p>
                 <p>kg</p>
               </div>
               <div className="flex items-center font-robot text-2xl">
                 <p>¥</p>
-                <p>{commodityCrop.price}</p>
+                <p>{commodityCrop.price.toLocaleString()}</p>
               </div>
             </div>
             <div className="px-5 py-3 border-b pb-1">
