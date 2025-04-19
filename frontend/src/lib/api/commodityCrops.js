@@ -24,3 +24,15 @@ export const fetchCommodityCropById = async (id) => {
   const response = await apiClient.get(`/commodity_crops/${id}`);
   return response.data;
 };
+
+// 商品作物の削除
+export const deleteCommodityCrop = async (id) => {
+  try {
+    await apiClient.delete(`/commodity_crops/${id}`);
+  } catch (error) {
+    console.error('商品作物の削除に失敗しました');
+    console.error('Request URL:', apiClient.defaults.baseURL + `/commodity_crops/${id}`);
+    console.error('Error details:', error);
+    throw error;
+  }
+};
