@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       <body className="center-container">
         <div className="mobile-container">
           <Header />
-          <div className="content-area">{children}</div>
+          {children}
         </div>
       </body>
     </html>

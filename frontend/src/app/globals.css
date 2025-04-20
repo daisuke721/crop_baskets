@@ -9,17 +9,17 @@
 
 /* モバイルの幅を適切に調整 */
 .mobile-container {
-  @apply w-full h-screen max-w-[480px] sm:max-w-[600px] mx-auto bg-white flex flex-col relative;
+  @apply w-full h-screen max-w-[480px] mx-auto bg-white flex flex-col relative;
 }
 
 /* スクロール可能エリア */
 .content-area {
-  @apply flex-1 overflow-y-auto pb-20;
+  @apply flex-1 overflow-y-auto pb-12;
 }
 
 /* フッターボタンの固定 */
 .footer-button {
-  @apply absolute bottom-0 left-0 w-full border-t border-gray-200 bg-white;
+  @apply absolute bottom-0 left-0 w-full border-t border-gray-200 bg-white h-24;
 }
 
 /* 全体のスクロールを有効化 */
