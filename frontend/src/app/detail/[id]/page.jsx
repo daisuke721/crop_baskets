@@ -7,7 +7,6 @@ import { addToCart } from '../../../lib/api/cart';
 
 import { DetailImagesSlider } from '../../../components/DetailImagesSlider';
 import { BottomFooterLayout } from '../../../Layout/BottomFooterLayout';
-// import { ModalLayout } from '../../../Layout/ModalLayout';
 import { CartModalContent } from '../../../components/CartModalContent';
 
 const Page = ({ params }) => {
@@ -121,7 +120,6 @@ const Page = ({ params }) => {
       </BottomFooterLayout>
 
       {/* カートボタンを押下されたらモーダルが開く */}
-      {/* <ModalLayout isOpen={isCartModalOpen}> */}
       <CartModalContent
         isOpen={isCartModalOpen}
         onGoList={() => {
@@ -133,7 +131,6 @@ const Page = ({ params }) => {
           router.push('/cart');
         }}
       />
-      {/* </ModalLayout> */}
     </>
   );
 };
