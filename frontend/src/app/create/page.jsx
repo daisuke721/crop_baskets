@@ -12,7 +12,6 @@ import { fetchCrops } from '../../lib/api/crops';
 import { createCommodityCrop } from '../../lib/api/commodityCrops';
 
 import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
-import { ModalLayout } from '../../Layout/ModalLayout';
 import { CreateModalContent } from '../../components/CreateModalContent';
 
 const Page = () => {
@@ -403,15 +402,14 @@ const Page = () => {
       </BottomFooterLayout>
 
       {/* モーダルを表示 */}
-      <ModalLayout isOpen={isCreateModalOpen}>
-        <CreateModalContent
-          onClose={() => {
-            setIsCreateModalOpen(false);
-            resetForm();
-          }}
-          onGoHome={handleHome}
-        />
-      </ModalLayout>
+      <CreateModalContent
+        isOpen={isCreateModalOpen}
+        onClose={() => {
+          setIsCreateModalOpen(false);
+          resetForm();
+        }}
+        onGoHome={handleHome}
+      />
     </>
   );
 };
