@@ -1,6 +1,6 @@
 import { Noto_Sans_JP, Roboto } from 'next/font/google';
 import './globals.css';
-import Header from '../components/Header';
+import Header from '../Layout/Header';
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ['latin'],
