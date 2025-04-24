@@ -58,7 +58,7 @@ export const MainCardsSlider = () => {
         <Swiper
           ref={swiperRef}
           modules={[Pagination, Navigation]}
-          spaceBetween={30}
+          spaceBetween={10}
           slidesPerView={2.2}
           loop={true}
           centeredSlides={true}
@@ -81,7 +81,7 @@ export const MainCardsSlider = () => {
             <SwiperSlide key={crop.id}>
               <div
                 onClick={() => handleDetailId(crop.id)}
-                className="w-[192px] border rounded-lg shadow cursor-pointer overflow-hidden hover:opacity-65"
+                className="w-full max-w-[192px] mx-auto border rounded-lg shadow cursor-pointer overflow-hidden hover:opacity-65"
               >
                 <Image
                   src={crop.commodity_crop_images[0]?.image_url || '/placeholder.png'}
@@ -103,8 +103,8 @@ export const MainCardsSlider = () => {
                       <p>kg</p>
                     </div>
                     <div className="flex justify-end items-baseline font-roboto">
-                      <p className="text-2xl mr-1">¥</p>
-                      <p className="text-2xl">{crop.price.toLocaleString('ja-JP')}</p>
+                      <p className="text-base mr-1">¥</p>
+                      <p className="text-base">{crop.price.toLocaleString('ja-JP')}</p>
                     </div>
                   </div>
                   <div className="flex justify-center mt-2 mb-1 border-t pt-3">
