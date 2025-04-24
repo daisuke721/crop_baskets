@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { fetchCommodityCrops } from '../lib/api/commodityCrops';
 import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
 export const MainCardsSlider = () => {
   const router = useRouter();
@@ -40,28 +41,28 @@ export const MainCardsSlider = () => {
 
   return (
     <>
-      <div className="w-full max-w-5xl mx-auto my-10 relative">
+      <div className="w-full max-w-5xl mx-auto my-5 relative">
         {/* Swiperのカスタムボタン */}
         <button
           ref={prevRef}
-          className="absolute -left-5 top-1/2 transform -translate-y-1/2 bg-gray-800/50 text-white rounded-full p-3 z-10 swiper-custom-prev"
+          className="absolute -left-5 top-1/2 transform -translate-y-1/2 bg-gray-800/50 text-white rounded-full p-3 z-10 swiper-custom-prev hover:opacity-85"
         >
           <FaChevronLeft size={20} />
         </button>
         <button
           ref={nextRef}
-          className="absolute -right-5 top-1/2 transform -translate-y-1/2 bg-gray-800/50 text-white rounded-full p-3 z-10 swiper-custom-next"
+          className="absolute -right-5 top-1/2 transform -translate-y-1/2 bg-gray-800/50 text-white rounded-full p-3 z-10 swiper-custom-next hover:opacity-85"
         >
           <FaChevronRight size={20} />
         </button>
         <Swiper
           ref={swiperRef}
           modules={[Pagination, Navigation]}
-          spaceBetween={15}
-          slidesPerView={2.5}
+          spaceBetween={30}
+          slidesPerView={2.2}
           loop={true}
           centeredSlides={true}
-          centeredSlidesBounds={true}
+          // centeredSlidesBounds={true}
           onInit={(swiper) => {
             // Swiperの初期化時にカスタムナビゲーションを設定
             // 正しく参照できているか確認
@@ -80,7 +81,7 @@ export const MainCardsSlider = () => {
             <SwiperSlide key={crop.id}>
               <div
                 onClick={() => handleDetailId(crop.id)}
-                className="border rounded-lg shadow cursor-pointer overflow-hidden hover:opacity-65"
+                className="w-[192px] border rounded-lg shadow cursor-pointer overflow-hidden hover:opacity-65"
               >
                 <Image
                   src={crop.commodity_crop_images[0]?.image_url || '/placeholder.png'}
@@ -90,17 +91,26 @@ export const MainCardsSlider = () => {
                   className="w-full h-40 object-cover"
                   unoptimized
                 />
-                <div className="p-4 font-noto">
-                  <h3 className="text-center text-xl font-semibold truncate">{crop.name}</h3>
-                  <div className="mt-5 text-gray-700">
-                    <div className="flex items-center font-roboto bg-gray-50 rounded-xl py-1 px-3 w-min">
-                      <p>{crop.capacity}</p>
-                      <p>g</p>
+                <div className="px-4 py-2 font-noto">
+                  <h3 className="text-sm font-semibold truncate">{crop.name}</h3>
+                  <div className="flex items-center text-xs pt-1 text-gray-500">
+                    <FaMapMarkerAlt />
+                    <div>{crop.crop_producing_area}</div>
+                  </div>
+                  <div className="flex justify-between items-baseline text-gray-700">
+                    <div className="flex text-xs items-center font-roboto bg-gray-100 rounded-md px-2 w-min">
+                      <p>{crop.capacity.toLocaleString('ja-JP')}</p>
+                      <p>kg</p>
                     </div>
                     <div className="flex justify-end items-baseline font-roboto">
                       <p className="text-2xl mr-1">¥</p>
-                      <p className="text-2xl">{crop.price}</p>
+                      <p className="text-2xl">{crop.price.toLocaleString('ja-JP')}</p>
                     </div>
+                  </div>
+                  <div className="flex justify-center mt-2 mb-1 border-t pt-3">
+                    <button className="font-noto text-sm bg-honey text-white w-full py-1 rounded-2xl hover:bg-yellow-700 hover:opacity-100 transition">
+                      カートへ入れる
+                    </button>
                   </div>
                 </div>
               </div>

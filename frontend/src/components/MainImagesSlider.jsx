@@ -10,15 +10,15 @@ const images = ['/メイン画像1.png', '/メイン画像2.png', '/メイン画
 const MainImagesSlider = () => {
   return (
     <>
-      <div className="w-full max-w-[500px] mx-auto">
+      <div className="w-full max-w-[480px] mx-auto">
         <Swiper
           modules={[Pagination, Autoplay]} // Swiperに必要なモジュール(ページネーション・自動スライド)を追加
           style={{ width: '100%' }}
-          spaceBetween={10} // スライド同士の間隔
+          spaceBetween={20} // スライド同士の間隔
           slidesPerView={1} // 一度に表示させるスライドの枚数
           loop={true}
           autoplay={{ delay: 3000, disableOnInteraction: false }} // 3秒ごとにスライドを自動で切り替え(ユーザーが操作しても自動スライドを停止しない)
-          pagination={{ clickable: false }} // ページネーションのドットナビをクリックできないようにする
+          pagination={{ clickable: true, el: '.custom-pagination' }} // ページネーションのドットナビをクリックできないようにする
         >
           {images.map((src, index) => (
             <SwiperSlide key={index}>
@@ -29,6 +29,7 @@ const MainImagesSlider = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+        <div className="custom-pagination flex justify-center mt-4 space-x-2"></div>
       </div>
     </>
   );
