@@ -4,8 +4,7 @@ import { useRouter } from 'next/navigation';
 import Nav from '../components/Nav';
 import MainImagesSlider from '../components/MainImagesSlider';
 import { MainCardsSlider } from '../components/MainCardsSlider';
-
-import { BottomNavigationBar } from '../components/BottomNavigationBar';
+import { BottomNavigationBar } from '../Layout/BottomNavigationBar';
 
 export default function Home() {
   const router = useRouter();
