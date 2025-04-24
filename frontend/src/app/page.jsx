@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Nav from '../components/Nav';
 import MainImagesSlider from '../components/MainImagesSlider';
 import { MainCardsSlider } from '../components/MainCardsSlider';
 import { BottomNavigationBar } from '../Layout/BottomNavigationBar';
@@ -15,7 +14,6 @@ export default function Home() {
   return (
     <>
       <div className="content-area">
-        <Nav />
         <div className="mb-10">
           <MainImagesSlider />
         </div>
