@@ -1,13 +1,23 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
 import { FaHome, FaCarrot } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa6';
 import { GiBasket } from 'react-icons/gi';
 import { CiMenuBurger } from 'react-icons/ci';
 
+import { Drawer } from '../components/Drawer';
+
 export const BottomNavigationBar = () => {
   const router = useRouter();
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
 
   return (
     <>
@@ -29,12 +39,14 @@ export const BottomNavigationBar = () => {
             <button onClick={() => router.push('/')} className="text-sprayGreen hover:text-honey text-2xl">
               <FaCarrot />
             </button>
-            <button onClick={() => router.push('/')} className="text-sprayGreen hover:text-honey text-2xl">
+            <button onClick={toggleDrawer} className="text-sprayGreen hover:text-honey text-2xl">
               <CiMenuBurger />
             </button>
           </nav>
         </div>
       </div>
+      {/* Drawerの表示 */}
+      <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
     </>
   );
 };
