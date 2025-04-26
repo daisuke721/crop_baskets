@@ -8,7 +8,7 @@ export const ModalLayout = ({ isOpen, children }) => {
 
   const modal = (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[1000]">
-      <div className="bg-white p-8 rounded-lg shadow-md text-center w-96">{children}</div>
+      <div className="bg-white p-8 rounded-lg shadow-md text-center w-80">{children}</div>
     </div>
   );
 

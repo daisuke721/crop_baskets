@@ -10,6 +10,9 @@ import { fetchCommodityCrops } from '../lib/api/commodityCrops';
 import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { addToCart } from '../lib/api/cart';
+import { ModalLayout } from '../Layout/ModalLayout';
+import { MainCartAddModalContent } from './MainCartAddModalContent';
 
 export const MainCardsSlider = () => {
   const router = useRouter();
@@ -38,6 +41,22 @@ export const MainCardsSlider = () => {
 
     loadCrops();
   }, []);
+
+  // カード内のカートへ入れるがクリックされるとカート内へ追加
+  const handleAddToCart = async (e, crop) => {
+    // カード全体のonClickを止める
+    e.stopPropagation();
+
+    try {
+      await addToCart(crop.id, crop.price);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('カートに追加できませんでした', error);
+    }
+  };
+
+  // モーダル用コンポーネントの呼び出し
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
@@ -108,7 +127,10 @@ export const MainCardsSlider = () => {
                     </div>
                   </div>
                   <div className="flex justify-center mt-2 mb-1 border-t pt-3">
-                    <button className="font-noto text-sm bg-honey text-white w-full py-1 rounded-2xl hover:bg-yellow-700 hover:opacity-100 transition">
+                    <button
+                      onClick={(e) => handleAddToCart(e, crop)}
+                      className="font-noto text-sm bg-honey text-white w-full py-1 rounded-2xl hover:bg-yellow-700 hover:opacity-100 transition"
+                    >
                       カートへ入れる
                     </button>
                   </div>
@@ -117,6 +139,16 @@ export const MainCardsSlider = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+        {/* カートボタンが押されるとモーダルを表示 */}
+        <ModalLayout isOpen={isModalOpen}>
+          <MainCartAddModalContent
+            onGoCart={() => {
+              setIsModalOpen(false);
+              router.push('/cart');
+            }}
+            onClose={() => setIsModalOpen(false)}
+          />
+        </ModalLayout>
       </div>
     </>
   );
