@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { createOrder, fetchOrderData } from '../../lib/api/orders';
 import { deleteCommodityCrop, fetchCommodityCropById } from '../../lib/api/commodityCrops';
 import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
+import { BottomNavigationBar } from '../../Layout/BottomNavigationBar';
 
 export const CheckoutContent = () => {
   const router = useRouter();
@@ -78,10 +79,10 @@ export const CheckoutContent = () => {
   return (
     <>
       <div className="content-area">
-        <div className="p-5">
-          <h2 className="font-noto text-2xl text-center mb-10">購入手続き</h2>
+        <div className="px-5">
+          <h2 className="font-noto text-2xl font-bold text-center py-5">購入手続き</h2>
           <div className="font-noto bg-sprayGreen text-white p-2 rounded-sm my-3">購入内容</div>
-          <div className="border rounded-sm p-5">
+          <div className="border rounded-sm px-5 pt-3 mb-10">
             {cartItems.map((item) => (
               <div key={item.id} className="flex border-b py-2">
                 <img
@@ -105,25 +106,25 @@ export const CheckoutContent = () => {
                 </div>
               </div>
             ))}
-            <div className="flex justify-between mt-2">
-              <p className="font-noto">合計金額</p>
-              <div className="flex items-center font-roboto text-xl">
+            <div className="flex justify-between items-baseline mt-5">
+              <p className="font-noto text-lg font-semibold">合計金額</p>
+              <div className="flex items-baseline font-roboto font-semibold text-2xl">
                 <p>¥</p>
                 <p>{parseFloat(totalPrice).toLocaleString('ja-JP')}</p>
               </div>
             </div>
           </div>
+          <button
+            onClick={handlePurchase}
+            className="font-noto w-full text-xl bg-honey text-white px-8 py-3 rounded-lg hover:bg-yellow-600 transition"
+          >
+            購入する
+          </button>
         </div>
       </div>
 
-      <BottomFooterLayout>
-        <button
-          onClick={handlePurchase}
-          className="font-noto text-xl bg-honey text-white px-8 py-3 rounded-lg hover:opacity-85 transition"
-        >
-          購入する
-        </button>
-      </BottomFooterLayout>
+      {/* ボトムナビゲーションバー */}
+      <BottomNavigationBar />
     </>
   );
 };

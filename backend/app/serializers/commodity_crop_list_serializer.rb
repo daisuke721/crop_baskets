@@ -1,6 +1,6 @@
 class CommodityCropListSerializer < ActiveModel::Serializer
   # 作物一覧時に必要な基本情報
-  attributes :id, :name, :capacity, :price, :crop_producing_area
+  attributes :id, :name, :capacity, :price, :crop_producing_area, :harvest_day
 
   # commodity_crop_images を明示的に追加
   attribute :commodity_crop_images do

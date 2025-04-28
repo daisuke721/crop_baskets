@@ -13,6 +13,7 @@ import { createCommodityCrop } from '../../lib/api/commodityCrops';
 
 import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
 import { CreateModalContent } from '../../components/CreateModalContent';
+import { BottomNavigationBar } from '../../Layout/BottomNavigationBar';
 
 const Page = () => {
   const router = useRouter();
@@ -380,26 +381,24 @@ const Page = () => {
               {/* 商品説明のエラーメッセージを表示 */}
               {errors && <p className="text-red-500 text-center mt-2">{errors.description}</p>}
             </div>
+            <button
+              onClick={async () => {
+                const isSuccess = await handleSubmit();
+                // 成功時のみ遷移
+                if (isSuccess) {
+                  setIsCreateModalOpen(true);
+                }
+              }}
+              className="font-noto text-2xl leading-tight bg-honey text-white py-3 rounded-lg hover:bg-yellow-600 transition"
+            >
+              出品する
+            </button>
           </div>
         </div>
       </div>
-      {/* <div className="h-24"></div> */}
-      {/* <div className="flex justify-center py-4"></div> */}
-      {/* 出品ボタンフッター */}
-      <BottomFooterLayout>
-        <button
-          onClick={async () => {
-            const isSuccess = await handleSubmit();
-            // 成功時のみ遷移
-            if (isSuccess) {
-              setIsCreateModalOpen(true);
-            }
-          }}
-          className="font-noto text-2xl bg-honey text-white px-8 py-3 rounded-lg hover:opacity-85 transition"
-        >
-          出品する
-        </button>
-      </BottomFooterLayout>
+
+      {/* ナビゲーション */}
+      <BottomNavigationBar />
 
       {/* モーダルを表示 */}
       <CreateModalContent

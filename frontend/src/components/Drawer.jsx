@@ -25,15 +25,23 @@ export const Drawer = ({ isOpen, onClose }) => {
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="p-4">
-          <h2 className="tex-lg font-bold mb-4">メニュー</h2>
-          <ul>
-            <li>
+        <div className="h-full">
+          <div className="py-3 border-b border-b-gray-300">
+            <div className="flex justify-between items-center px-3">
+              <h2 className="tex-lg font-bold">メニュー</h2>
+              <button onClick={onClose} className="text-2xl text-gray-500 hover:text-gray-700">
+                ×
+              </button>
+            </div>
+          </div>
+          <ul className="w-full">
+            <li className="py-2 px-3">
               <button
-                className="font-noto w-24 py-1 px-2 bg-honey text-white rounded-full hover:bg-yellow-500"
+                className="font-noto w-full py-2 px-3 bg-honey text-white rounded-full hover:bg-yellow-500 shadow-md transition-all duration-300"
                 onClick={() => router.push('/create')}
               >
-                出品
+                <span className="block text-base font-bold leading-tight">生産者の方々へ</span>
+                <span className="block text-sm font-light leading-snug">出品はこちらこをクリック</span>
               </button>
             </li>
           </ul>
