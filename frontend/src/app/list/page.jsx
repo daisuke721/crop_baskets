@@ -2,7 +2,14 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
 import { fetchCommodityCrops } from '../../lib/api/commodityCrops';
+import { addToCart } from '../../lib/api/cart';
+
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { ModalLayout } from '../../Layout/ModalLayout';
+import { MainCartAddModalContent } from '../../components/MainCartAddModalContent';
+import { BottomNavigationBar } from '../../Layout/BottomNavigationBar';
 
 const ITEMS_PER_PAGE = 30;
 
@@ -28,6 +35,22 @@ const Page = () => {
     loadCrops();
   }, []);
 
+  // モーダル用コンポーネントの呼び出し
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // カード内のカートへ入れるがクリックされるとカート内へ追加
+  const handleAddToCart = async (e, crop) => {
+    // カード全体onClickを止める
+    e.stopPropagation();
+
+    try {
+      await addToCart(crop.id, crop.price);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('カートに追加できませんでした', error);
+    }
+  };
+
   const [currentPage, setCurrentPage] = useState(1);
 
   // ページネーション処理
@@ -38,50 +61,64 @@ const Page = () => {
     <>
       <div className="content-area">
         {/* 商品作物カード */}
-        <div className="grid grid-cols-2 gap-3 mx-5 my-24">
+        <div className="grid grid-cols-2 gap-3 mx-5 mt-5 mb-10">
           {paginatedCrops.map((crop) => (
             <div
               key={crop.id}
-              className="border rounded-lg shadow cursor-pointer overflow-hidden"
+              className="border rounded-lg shadow hover:shadow-lg cursor-pointer overflow-hidden transform hover:scale-95"
               onClick={() => handleDetailID(crop.id)}
             >
-              {crop.commodity_crop_images.length > 0 ? (
-                <img
-                  src={crop.commodity_crop_images[0].image_url}
-                  width={50}
-                  height={50}
-                  alt="商品画像"
-                  className="w-full h-40 object-cover"
-                />
-              ) : (
-                <img
-                  src="/placeholder.png"
-                  width={50}
-                  height={50}
-                  alt="プレースホルダー"
-                  className="w-full h-40 object-cover"
-                />
-              )}
-              <div className="p-4 font-noto">
-                <h3 className="text-center text-xl font-semibold">{crop.name}</h3>
-                <div className="mt-5 text-gray-700">
-                  <div className="flex items-center font-roboto bg-gray-50 rounded-xl py-1 px-3 w-min">
-                    <p>{crop.capacity}</p>
-                    <p>g</p>
+              <img
+                src={crop.commodity_crop_images[0]?.image_url || '/placeholder.png'}
+                width={50}
+                height={50}
+                alt="商品画像"
+                className="w-full h-40 object-cover"
+              />
+              <div className="px-4 py-2 font-noto flex flex-col justify-between flex-1">
+                <div className="flex items-baseline text-xs text-green-700 pb-1 ">
+                  <p className="font-noto pr-1">収穫日:</p>
+                  {/* 収穫日をYYYY-MM-DDに変更 */}
+                  <p className="font-roboto">
+                    {new Date(crop.harvest_day).toLocaleDateString('jp-JP', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                    })}
+                  </p>
+                </div>
+                <h3 className="text-sm font-semibold line-clamp-2 h-10 overflow-hidden">{crop.name}</h3>
+                <div className="text-gray-700">
+                  <div className="flex items-center text-xs pt-1 text-gray-500">
+                    <FaMapMarkerAlt />
+                    <div>{crop.crop_producing_area}</div>
                   </div>
-                  <div className="flex justify-end items-baseline font-roboto">
-                    <p className="text-2xl text-gray-500 mr-1">¥</p>
-                    <p className="text-2xl">{crop.price}</p>
+                  <div className="flex justify-between items-baseline text-gray-700">
+                    <div className="flex items-center font-roboto bg-gray-100 rounded-md px-2 w-min">
+                      <p className="text-sm">{crop.capacity.toLocaleString('ja-JP')}</p>
+                      <p className="text-sm">kg</p>
+                    </div>
+                    <div className="flex justify-end items-baseline font-roboto">
+                      <p className="text-base mr-1">¥</p>
+                      <p className="text-base">{crop.price.toLocaleString('ja-JP')}</p>
+                    </div>
                   </div>
+                </div>
+                <div className="flex justify-center mt-2 mb-1 border-t pt-3">
+                  <button
+                    onClick={(e) => handleAddToCart(e, crop)}
+                    className="font-noto text-sm bg-honey text-white w-full py-1 rounded-2xl hover:bg-yellow-700 hover:opacity-100 transition"
+                  >
+                    カートへ入れる
+                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
         {/* ページネーションUI */}
         {totalPages >= 1 && (
-          <div className="flex justify-center mt-5">
+          <div className="flex justify-center">
             {Array.from({ length: totalPages }).map((_, index) => (
               <button
                 key={index + 1}
@@ -96,6 +133,20 @@ const Page = () => {
           </div>
         )}
       </div>
+
+      {/* ナビゲーションバー */}
+      <BottomNavigationBar />
+
+      {/* カートボタンを押下されたらモーダルが開く */}
+      <ModalLayout isOpen={isModalOpen}>
+        <MainCartAddModalContent
+          onGoCart={() => {
+            setIsModalOpen(false);
+            router.push('/cart');
+          }}
+          onClose={() => setIsModalOpen(false)}
+        />
+      </ModalLayout>
     </>
   );
 };
