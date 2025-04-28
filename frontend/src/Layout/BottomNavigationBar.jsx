@@ -27,19 +27,25 @@ export const BottomNavigationBar = () => {
       <div className="absolute bottom-0 left-0 w-full border-t border-gray-100 bg-white h-14">
         <div className="flex justify-center py-4">
           <nav className="w-full flex justify-around items-center">
-            <button onClick={() => router.push('/')} className="text-sprayGreen hover:text-honey text-2xl">
+            <button onClick={() => router.push('/')} className="text-sprayGreen hover:text-honey text-2xl transition">
               <FaHome />
             </button>
-            <button onClick={() => router.push('#')} className="text-sprayGreen hover:text-honey text-2xl">
+            <button onClick={() => router.push('#')} className="text-sprayGreen hover:text-honey text-2xl transition">
               <FaUser />
             </button>
-            <button onClick={() => router.push('/cart')} className="text-sprayGreen hover:text-honey text-2xl">
+            <button
+              onClick={() => router.push('/cart')}
+              className="text-sprayGreen hover:text-honey text-2xl transition"
+            >
               <GiBasket />
             </button>
-            <button onClick={() => router.push('/')} className="text-sprayGreen hover:text-honey text-2xl">
+            <button
+              onClick={() => router.push('/list')}
+              className="text-sprayGreen hover:text-honey text-2xl transition"
+            >
               <FaCarrot />
             </button>
-            <button onClick={toggleDrawer} className="text-sprayGreen hover:text-honey text-2xl">
+            <button onClick={toggleDrawer} className="text-sprayGreen hover:text-honey text-2xl transition">
               <CiMenuBurger />
             </button>
           </nav>
