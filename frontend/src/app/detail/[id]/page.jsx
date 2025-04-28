@@ -8,6 +8,7 @@ import { addToCart } from '../../../lib/api/cart';
 import { DetailImagesSlider } from '../../../components/DetailImagesSlider';
 import { BottomFooterLayout } from '../../../Layout/BottomFooterLayout';
 import { CartModalContent } from '../../../components/CartModalContent';
+import { BottomNavigationBar } from '../../../Layout/BottomNavigationBar';
 
 const Page = ({ params }) => {
   const router = useRouter();
@@ -49,7 +50,7 @@ const Page = ({ params }) => {
   return (
     <>
       <div className="content-area">
-        <div className="px-5 mt-14">
+        <div className="px-5 mt-5">
           {/* <img
             src={commodityCrop.commodity_crop_images[0].image_url}
             alt="商品画像"
@@ -57,67 +58,69 @@ const Page = ({ params }) => {
           /> */}
           {/* 複数の写真を表示できるようにスライダーで実装 */}
           <DetailImagesSlider images={commodityCrop.commodity_crop_images} />
-          <h1 className="text-4xl font-noto font-bold my-5">{commodityCrop.name}</h1>
-          <div className="px-3 py-5">
-            <div className="flex justify-between items-center border-b pb-1">
-              <div className="flex items-center font-roboto text-2xl">
-                <p>{commodityCrop.capacity.toLocaleString()}</p>
-                <p>kg</p>
+          <div className="px-5">
+            <h1 className="text-xl font-noto font-bold mt-5">{commodityCrop.name}</h1>
+            <div className="py-5 mb-3">
+              <div className="flex justify-between items-baseline border-b pb-1">
+                <div className="flex items-center font-roboto font-semibold text-xl">
+                  <p>{commodityCrop.capacity.toLocaleString('ja-JP')}</p>
+                  <p>kg</p>
+                </div>
+                <div className="flex items-center font-robot font-semibold text-3xl">
+                  <p>¥</p>
+                  <p>{commodityCrop.price.toLocaleString('ja-JP')}</p>
+                </div>
               </div>
-              <div className="flex items-center font-robot text-2xl">
-                <p>¥</p>
-                <p>{commodityCrop.price.toLocaleString()}</p>
+              <div className="py-2 border-b pb-1">
+                <div className="flex justify-between items-center font-noto pb-2 text-base">
+                  <p>作物名</p>
+                  <p>{commodityCrop.crop.name}</p>
+                </div>
+                <div className="flex justify-between items-center font-noto pb-2 text-base">
+                  <p>品　種</p>
+                  <p>{commodityCrop.variety}</p>
+                </div>
+                <div className="flex justify-between items-center font-noto pb-2 text-base">
+                  <p>産　地</p>
+                  <p>{commodityCrop.crop.producing_area}</p>
+                </div>
+                <div className="flex justify-between items-center font-noto pb-2 text-base">
+                  <p>収穫日</p>
+                  {/* 収穫日をYYYY-MM-DDに変更 */}
+                  <p>
+                    {new Date(commodityCrop.harvest_day).toLocaleDateString('ja-JP', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                    })}
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col font-noto py-2 border-b pb-1 text-base">
+                <p>商品説明</p>
+                <p className="py-2">{commodityCrop.description}</p>
               </div>
             </div>
-            <div className="px-5 py-3 border-b pb-1">
-              <div className="flex justify-between items-center font-noto pb-2 text-lg">
-                <p className="text-gray-400">作物名</p>
-                <p>{commodityCrop.crop.name}</p>
-              </div>
-              <div className="flex justify-between items-center font-noto pb-2 text-lg">
-                <p className="text-gray-400">品　種</p>
-                <p>{commodityCrop.variety}</p>
-              </div>
-              <div className="flex justify-between items-center font-noto pb-2 text-lg">
-                <p className="text-gray-400">産　地</p>
-                <p>{commodityCrop.crop.producing_area}</p>
-              </div>
-              <div className="flex justify-between items-center font-noto pb-2 text-lg">
-                <p className="text-gray-400">収穫日</p>
-                {/* 収穫日をYYYY-MM-DDに変更 */}
-                <p>
-                  {new Date(commodityCrop.harvest_day).toLocaleDateString('ja-JP', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  })}
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col font-noto px-5 py-3 border-b pb-1">
-              <p className="text-gray-500 text-xl">商品説明</p>
-              <p className="px-3 py-3">{commodityCrop.description}</p>
+            <div className="flex justify-between items-center w-full space-x-5">
+              <button
+                onClick={handleOrder}
+                className="font-noto text-xl bg-sprayGreen text-white border border-sprayGreen w-full py-3 rounded-lg hover:bg-green-600 transition"
+              >
+                購入手続きへ
+              </button>
+              <button
+                onClick={handleAddToCart}
+                className="font-noto text-xl bg-honey text-white border border-honey w-full py-3 rounded-lg hover:bg-yellow-600 transition"
+              >
+                カートに入れる
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      <BottomFooterLayout>
-        <div className="items-center space-x-5">
-          <button
-            onClick={handleOrder}
-            className="font-noto text-xl bg-sprayGreen text-white border border-sprayGreen px-5 py-3 rounded-lg hover:bg-white hover:text-sprayGreen transition"
-          >
-            購入手続きへ
-          </button>
-          <button
-            onClick={handleAddToCart}
-            className="font-noto text-xl bg-white text-honey border border-honey px-2 py-3 rounded-lg hover:bg-honey hover:text-white transition"
-          >
-            カートに入れる
-          </button>
-        </div>
-      </BottomFooterLayout>
+      {/* ボトムナビゲーションバー */}
+      <BottomNavigationBar />
 
       {/* カートボタンを押下されたらモーダルが開く */}
       <CartModalContent
