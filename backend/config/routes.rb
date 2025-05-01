@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       resources :commodity_crops, only: [:index, :show, :create, :update, :destroy]
       resources :cart_items, only: [:index, :create, :destroy]
       resources :orders, only: [:index, :new, :create, :show]
+      # 簡単出品用のルーティング
+      resources :simple_listings, only: [:create]
     end
   end
 end
