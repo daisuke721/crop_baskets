@@ -21,12 +21,22 @@ class Api::V1::SimpleListingsController < ApplicationController
 
     # 保存した画像の公開URL(署名付き)を取得(production環境ではS3URLになる)
     # rails_blob_url: ActiveStorageのblobから署名付きURLを生成し、only_path: false にてフルパスURLで取得
-    image_url = rails_blob_url(blob, only_path: false)
+    image_url = blob.send(:service).url(
+      blob.key,
+      filename: blob.filename,
+      content_type: blob.content_type,
+      expires_in: 1.hour,
+      disposition: 'inline'
+    )
 
-    # ChatGPT Visionに画像を送り、作物情報を抽出
-    crop_info = ChatGptVisionService.analyze_crop_image(image_url)
+    # 確認用のログ
+    Rails.logger.info "S3 image_url: #{image_url}"
 
-    render json: crop_info
+    # ChatGPTに画像を送り、作物情報を抽出
+    service = ChatGptService.new
+    crop_info = service.analyze_crop_image(image_url)
+
+    render json: crop_info, status: :ok
 
   # 例外処理、何らかのエラーが起きた場合はここでキャッチ
   rescue => e
