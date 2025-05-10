@@ -41,7 +41,7 @@ export const Drawer = ({ isOpen, onClose }) => {
                 onClick={() => router.push('/create')}
               >
                 <span className="block text-base font-bold leading-tight">生産者の方々へ</span>
-                <span className="block text-sm font-light leading-snug">出品はこちらこをクリック</span>
+                <span className="block text-sm font-light leading-snug">出品はこちらをクリック</span>
               </button>
             </li>
           </ul>
