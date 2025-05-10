@@ -14,6 +14,7 @@ import { simpleListing } from '../../lib/api/simpleListings';
 
 import { CreateModalContent } from '../../components/CreateModalContent';
 import { BottomNavigationBar } from '../../Layout/BottomNavigationBar';
+import { AnalyzingModal } from '../../components/AnalyzingModal';
 
 const Page = () => {
   const router = useRouter();
@@ -178,12 +179,18 @@ const Page = () => {
     }
   };
 
+  // 解析開始時にモーダルを開き、終了時は自動で閉じるモーダルのstateを準備
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
   // 簡単出品ボタンを押したときに呼ばれる関数(最初に選択した画像をAPIに送信し、取得した作物情報でフォームを自動入力)
   const handleSimpleListing = async () => {
     // 画像が1枚もない場合は何もしない
     if (images.length === 0) return;
 
     try {
+      // 画像を解析時にモーダルを開く
+      setIsAnalyzing(true);
+
       // APIに画像を送信し、解析データを取得
       const data = await simpleListing(images[0]);
 
@@ -213,6 +220,9 @@ const Page = () => {
       // API呼び出しが失敗した場合エラーハンドリング
       alert('画像解析に失敗しました');
       console.error(error);
+    } finally {
+      // 画像の解析を終了時にモーダルを閉じる
+      setIsAnalyzing(false);
     }
   };
 
@@ -449,6 +459,9 @@ const Page = () => {
 
       {/* ナビゲーション */}
       <BottomNavigationBar />
+
+      {/* 画像解析のモーダルを表示 */}
+      {isAnalyzing && <AnalyzingModal />}
 
       {/* モーダルを表示 */}
       <CreateModalContent
