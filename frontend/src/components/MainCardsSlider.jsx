@@ -98,41 +98,43 @@ export const MainCardsSlider = () => {
         >
           {commodityCrops.map((crop) => (
             <SwiperSlide key={crop.id}>
-              <div
-                onClick={() => handleDetailId(crop.id)}
-                className="w-full max-w-[192px] mx-auto border rounded-lg shadow cursor-pointer overflow-hidden hover:opacity-65"
-              >
-                <Image
-                  src={crop.commodity_crop_images[0]?.image_url || '/placeholder.png'}
-                  width={50}
-                  height={50}
-                  alt="商品画像"
-                  className="w-full h-40 object-cover"
-                  unoptimized
-                />
-                <div className="px-4 py-2 font-noto">
-                  <h3 className="text-sm font-semibold truncate">{crop.name}</h3>
-                  <div className="flex items-center text-xs pt-1 text-gray-500">
-                    <FaMapMarkerAlt />
-                    <div>{crop.crop_producing_area}</div>
-                  </div>
-                  <div className="flex justify-between items-baseline text-gray-700">
-                    <div className="flex text-xs items-center font-roboto bg-gray-100 rounded-md px-2 w-min">
-                      <p>{crop.capacity.toLocaleString('ja-JP')}</p>
-                      <p>kg</p>
+              <div className="mt-1">
+                <div
+                  onClick={() => handleDetailId(crop.id)}
+                  className="w-full max-w-[192px] mx-auto border rounded-lg shadow cursor-pointer overflow-hidden transform transition-transform hover:-translate-y-1"
+                >
+                  <Image
+                    src={crop.commodity_crop_images[0]?.image_url || '/placeholder.png'}
+                    width={50}
+                    height={50}
+                    alt="商品画像"
+                    className="w-full h-40 object-cover"
+                    unoptimized
+                  />
+                  <div className="px-4 py-2 font-noto">
+                    <h3 className="text-sm font-semibold truncate">{crop.name}</h3>
+                    <div className="flex items-center text-xs pt-1 text-gray-500">
+                      <FaMapMarkerAlt />
+                      <div>{crop.crop_producing_area}</div>
                     </div>
-                    <div className="flex justify-end items-baseline font-roboto">
-                      <p className="text-base mr-1">¥</p>
-                      <p className="text-base">{crop.price.toLocaleString('ja-JP')}</p>
+                    <div className="flex justify-between items-baseline text-gray-700">
+                      <div className="flex text-xs items-center font-roboto bg-gray-100 rounded-md px-2 w-min">
+                        <p>{crop.capacity.toLocaleString('ja-JP')}</p>
+                        <p>kg</p>
+                      </div>
+                      <div className="flex justify-end items-baseline font-roboto">
+                        <p className="text-base mr-1">¥</p>
+                        <p className="text-base">{crop.price.toLocaleString('ja-JP')}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex justify-center mt-2 mb-1 border-t pt-3">
-                    <button
-                      onClick={(e) => handleAddToCart(e, crop)}
-                      className="font-noto text-sm bg-honey text-white w-full py-1 rounded-2xl hover:bg-yellow-700 hover:opacity-100 transition"
-                    >
-                      カートへ入れる
-                    </button>
+                    <div className="flex justify-center mt-2 mb-1 border-t pt-3">
+                      <button
+                        onClick={(e) => handleAddToCart(e, crop)}
+                        className="font-noto text-sm bg-honey text-white w-full py-1 rounded-2xl hover:bg-yellow-700 hover:opacity-100 transition"
+                      >
+                        カートへ入れる
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
