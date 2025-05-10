@@ -23,7 +23,6 @@ export default function Home() {
             <div className="font-noto font-semibold text-xl text-gray-500">
               <p>新着の商品作物</p>
             </div>
-            {/* </div> */}
           </div>
           <div className="px-8">
             <MainCardsSlider />
@@ -40,11 +39,9 @@ export default function Home() {
         {/* 今、旬のお野菜 */}
         <div className="mb-12">
           <div className="flex justify-center">
-            {/* <div className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[1px] after:bg-gray-400"> */}
             <div className="font-noto font-semibold text-xl text-gray-500">
               <p># 今、旬のお野菜</p>
             </div>
-            {/* </div> */}
           </div>
           <div className="px-8">
             <MainCardsSlider />
@@ -61,11 +58,9 @@ export default function Home() {
         {/* 規格外の作物 */}
         <div className="mb-12">
           <div className="flex justify-center">
-            {/* <div className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[1px] after:bg-gray-400"> */}
             <div className="font-noto font-semibold text-xl text-gray-500">
               <p># 規格外の作物</p>
             </div>
-            {/* </div> */}
           </div>
           <div className="px-8">
             <MainCardsSlider />
