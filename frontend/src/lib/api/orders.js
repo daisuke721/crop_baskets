@@ -1,6 +1,6 @@
 import apiClient from './apiClient';
 
-export const fetchOrderData = async (consumerId) => {
+export const fetchOrderData = async () => {
   try {
     const response = await apiClient.get(`/orders/new`);
     return response.data;
