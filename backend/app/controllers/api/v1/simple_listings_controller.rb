@@ -39,7 +39,7 @@ class Api::V1::SimpleListingsController < ApplicationController
     render json: crop_info, status: :ok
 
   # 例外処理、何らかのエラーが起きた場合はここでキャッチ
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error(e.message)
     render json: { error: '解析中にエラーが発生しました' }, status: :internal_server_error
   end

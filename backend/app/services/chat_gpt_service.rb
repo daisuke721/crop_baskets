@@ -4,10 +4,12 @@ class ChatGptService
   def allowed_crops
     @allowed_crops ||= Crop.distinct.pluck(:name).join(" / ")
   end
+
   # OpenAIクライアントを初期化する、initializeメソッドを作成
   def initialize
     @client = OpenAI::Client.new(access_token: ENV['OPENAI_API_KEY'])
   end
+
   # image_url: 解析する画像のURL
   def analyze_crop_image(image_url)
     # プロンプトを作成
@@ -56,7 +58,7 @@ class ChatGptService
     # APIのレスポンスから解答の本文を取り出す
     # choices[0].message.contentに回答が入っている
     content = response.dig("choices", 0, "message", "content")
-    return { error: "no_response" } unless content.present?
+    return { error: "no_response" } if content.blank?
 
     # レスポンスから作物名と品種名を正規表現で抽出
     {
