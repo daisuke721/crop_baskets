@@ -10,8 +10,8 @@ import { ja } from 'date-fns/locale';
 
 import { fetchCrops } from '../../lib/api/crops';
 import { createCommodityCrop } from '../../lib/api/commodityCrops';
+import { simpleListing } from '../../lib/api/simpleListings';
 
-import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
 import { CreateModalContent } from '../../components/CreateModalContent';
 import { BottomNavigationBar } from '../../Layout/BottomNavigationBar';
 
@@ -178,6 +178,44 @@ const Page = () => {
     }
   };
 
+  // 簡単出品ボタンを押したときに呼ばれる関数(最初に選択した画像をAPIに送信し、取得した作物情報でフォームを自動入力)
+  const handleSimpleListing = async () => {
+    // 画像が1枚もない場合は何もしない
+    if (images.length === 0) return;
+
+    try {
+      // APIに画像を送信し、解析データを取得
+      const data = await simpleListing(images[0]);
+
+      // 取得した作物名で<select>の作物名を自動選択
+      setSelectedCrop(data.name);
+
+      // 選択された作物名に対応する産地リストを取得&ソート
+      const filteredOrigins = crops
+        .filter((crop) => crop.name === data.name)
+        .map((crop) => ({ id: crop.id, producing_area: crop.producing_area }))
+        .sort((a, b) => a.producing_area.localeCompare(b, 'ja'));
+
+      setOrigins(filteredOrigins);
+
+      // もし、取得できた産地リストがあれば1番目の産地を選択
+      const firstOrigin = filteredOrigins[0];
+
+      // 既存のフォーム入力データをAI結果で上書き
+      setFormData((prev) => ({
+        ...prev, // 既存データを残す
+        name: data.product_name ?? prev.name,
+        price: data.price?.match(/\d+/)?.[0] ?? prev.price,
+        description: data.description ?? prev.description,
+        crop_id: firstOrigin?.id ?? prev.crop_id,
+      }));
+    } catch (error) {
+      // API呼び出しが失敗した場合エラーハンドリング
+      alert('画像解析に失敗しました');
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div className="content-area">
@@ -207,16 +245,28 @@ const Page = () => {
               ))
             ) : (
               <div className="flex items-center justify-center w-full">
-                <p className="text-stone-400">画像がまだ選択されていません</p>
+                <p className="text-stone-400 bg-[url('/placeholder.png')]">画像がまだ選択されていません</p>
               </div>
             )}
           </div>
         </div>
+        {/* 画像を選択後、簡単出品ボタンが出てくるようにする */}
+        {images.length > 0 && (
+          <div className="flex justify-center mt-4">
+            <button
+              type="button"
+              onClick={handleSimpleListing}
+              className="w-44 px-4 py-2 font-noto bg-sky-400 text-white rounded-lg hover:bg-sky-500 transition"
+            >
+              画像を解析する
+            </button>
+          </div>
+        )}
         {/* 画像のエラーメッセージを表示 */}
         {errors && <p className="text-red-500 text-center mt-2">{errors.images}</p>}
         <div className="flex justify-center">
           <div className="flex justify-center pb-10 w-11/12 border-b border-gray-200">
-            <label className="block w-44 mt-5 p-2 rounded-lg cursor-pointer text-center text-sprayGreen border border-sprayGreen font-noto hover:bg-sprayGreen hover:text-white transition">
+            <label className="block w-44 mt-5 px-4 py-2 rounded-lg cursor-pointer text-center text-white bg-sprayGreen font-noto hover:bg-emerald-500 transition">
               商品画像を登録する
               <input type="file" multiple className="hidden" onChange={handleImageUpload} />
             </label>
