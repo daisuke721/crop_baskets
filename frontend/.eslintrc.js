@@ -13,5 +13,6 @@ module.exports = {
     'no-unused-vars': 'warn',
     // Next.js では React import が不要なので無効化
     'react/react-in-jsx-scope': 'off',
+    '@next/next/no-img-element': 'off',
   },
 };
