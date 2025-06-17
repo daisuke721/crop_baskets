@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  devise_for :producers
-  devise_for :consumers
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -19,4 +17,21 @@ Rails.application.routes.draw do
       resources :simple_listings, only: [:create]
     end
   end
+
+  # deviseのルーティング
+  devise_for :consumers,
+              path: 'api/v1/consumers',
+              defaults: { format: :json },
+              controllers: {
+                sessions: 'consumers/sessions',
+                registrations: 'consumers/registrations'
+              }
+
+  devise_for :producers,
+              path: 'api/v1/producers',
+              defaults: { format: :json },
+              controllers: {
+                sessions: 'producers/sessions',
+                registrations: 'producers/registrations'
+              }
 end
