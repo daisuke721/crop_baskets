@@ -23,15 +23,15 @@ Rails.application.routes.draw do
               path: 'api/v1/consumers',
               defaults: { format: :json },
               controllers: {
-                sessions: 'consumers/sessions',
-                registrations: 'consumers/registrations'
+                sessions: 'api/v1/consumers/sessions',
+                registrations: 'api/v1/consumers/registrations'
               }
 
   devise_for :producers,
               path: 'api/v1/producers',
               defaults: { format: :json },
               controllers: {
-                sessions: 'producers/sessions',
-                registrations: 'producers/registrations'
+                sessions: 'api/v1/producers/sessions',
+                registrations: 'api/v1/producers/registrations'
               }
 end
