@@ -4,6 +4,9 @@ class Api::V1::Consumers::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
+    token = Warden::JWTAuth::UserEncoder.new.call(resource, :consumer, nil).first
+    response.set_header('Authorization', "Bearer #{token}")
+
     render json: { message: 'ログイン成功（Consumer）', consumer: resource }, status: :ok
   end
 
