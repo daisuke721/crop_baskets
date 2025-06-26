@@ -1,4 +1,7 @@
 class Api::V1::CommodityCropsController < ApplicationController
+  # Deviseの認証用フィルター
+  before_action :authenticate_producer!, only: [:create]
+
   # アクションの共通化
   before_action :set_commodity_crop, only: [:show, :destroy]
 
