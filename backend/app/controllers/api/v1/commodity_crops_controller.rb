@@ -15,7 +15,7 @@ class Api::V1::CommodityCropsController < ApplicationController
   end
 
   def create
-    commodity_crop = CommodityCrop.new(commodity_crop_params)
+    commodity_crop = current_producer.commodity_crops.new(commodity_crop_params)
 
     # 保存前に画像がなければエラーを返す
     if params.dig(:commodity_crop, :images).blank?
