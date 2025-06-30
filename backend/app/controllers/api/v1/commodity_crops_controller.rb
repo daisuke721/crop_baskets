@@ -15,7 +15,10 @@ class Api::V1::CommodityCropsController < ApplicationController
   end
 
   def create
-    commodity_crop = current_producer.commodity_crops.new(commodity_crop_params)
+    commodity_crop = CommodityCrop.new(commodity_crop_params)
+    commodity_crop.producer = current_producer
+
+    Rails.logger.info "params[:commodity_crop][:images] = #{params.dig(:commodity_crop, :images).inspect}"
 
     # 保存前に画像がなければエラーを返す
     if params.dig(:commodity_crop, :images).blank?
@@ -25,7 +28,8 @@ class Api::V1::CommodityCropsController < ApplicationController
     if commodity_crop.save
       # 画像が送信されたら画像があるかpresent?で確認しeach文で1つずつcommodity_crop_imagesに保存
       if params.dig(:commodity_crop, :images).present?
-        params[:commodity_crop][:images].each do |image|
+        # Arrayを使って強制的に配列に変換し、画像が1枚でも複数でも対応
+        Array(params[:commodity_crop][:images]).each do |image|
           # commodity_crop_images.create で CommodityCropImage レコードを作成
           commodity_crop_image = commodity_crop.commodity_crop_images.create
           commodity_crop_image.image.attach(image) # 画像ファイルをサーバーに保存する
