@@ -5,7 +5,7 @@ import { useState } from 'react';
 // import { useRouter } from 'next/navigation';
 import { registerConsumer } from '../../../lib/api/consumer';
 
-export default function ConsumerSignupPage() {
+const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -64,4 +64,6 @@ export default function ConsumerSignupPage() {
       </form>
     </div>
   );
-}
+};
+
+export default Page;

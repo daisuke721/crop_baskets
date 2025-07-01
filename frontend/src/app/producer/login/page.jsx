@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { loginProducer } from '../../../lib/api/producer';
 
-export const Page = () => {
+const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -52,3 +52,5 @@ export const Page = () => {
     </>
   );
 };
+
+export default Page;
