@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { loginProducer } from '../../../lib/api/producer';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,6 +18,8 @@ const Page = () => {
       const res = await loginProducer({ email, password });
       const token = res.headers['authorization'];
       localStorage.setItem('producerToken', token);
+
+      router.push('/producer/dashboard');
     } catch (err) {
       setError('ログインに失敗しました');
       console.error(err);

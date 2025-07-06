@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { registerProducer } from '../../../lib/api/producer';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter;
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -15,9 +17,10 @@ const Page = () => {
 
     try {
       const res = await registerProducer({ email, password, passwordConfirmation });
-
       const token = res.headers['authorization'];
       localStorage.setItem('producerToken', token);
+
+      router.push('/producer/dashboard');
     } catch (err) {
       console.error(err);
       setError('登録に失敗しました。入力内容をご確認ください。');
