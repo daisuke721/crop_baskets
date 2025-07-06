@@ -1,7 +1,7 @@
 import apiClient from './apiClient';
 
 // 新規登録
-export const registerConsumer = async ({ email, password, passwordConfirmation }) => {
+export const signUpConsumer = async ({ email, password, passwordConfirmation }) => {
   const response = await apiClient.post('/consumers', {
     email,
     password,
@@ -12,7 +12,7 @@ export const registerConsumer = async ({ email, password, passwordConfirmation }
 };
 
 // ログイン
-export const loginConsumer = async ({ email, password }) => {
+export const signInConsumer = async ({ email, password }) => {
   const response = await apiClient.post('/consumers/sign_in', {
     email,
     password,
