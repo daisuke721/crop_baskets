@@ -12,7 +12,7 @@ const Page = () => {
   const [error, setError] = useState('');
   // const router = useRouter();
 
-  const handleSignup = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -33,7 +33,7 @@ const Page = () => {
     <div className="p-4 max-w-md mx-auto">
       <h1 className="text-xl font-bold mb-4">Consumer 新規登録</h1>
       {error && <p className="text-red-500 mb-2">{error}</p>}
-      <form onSubmit={handleSignup} className="space-y-4">
+      <form onSubmit={handleRegister} className="space-y-4">
         <input
           type="email"
           placeholder="メールアドレス"
