@@ -23,7 +23,7 @@ const Page = () => {
                 </div>
                 <div>
                   <button
-                    onClick={() => router.push('/producer/login')}
+                    onClick={() => router.push('/producer/signin')}
                     className="w-full py-1 font-noto bg-green-600 text-white rounded"
                   >
                     ログイン
