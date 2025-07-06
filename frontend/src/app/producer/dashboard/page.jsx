@@ -1,12 +1,26 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const Page = () => {
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    // トークンの削除
+    localStorage.removeItem('producerToken');
+
+    router.push('/producer/home');
+  };
   return (
     <>
       <div className="p-4">
         <h1>生産者ダッシュボード</h1>
+        <div>
+          <button onClick={handleSignOut} className="text-pink-300 underline text-sm">
+            ログアウト
+          </button>
+        </div>
         <div>
           <a href="/create">出品する</a>
         </div>
