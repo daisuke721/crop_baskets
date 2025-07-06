@@ -1,6 +1,6 @@
 class Api::V1::CommodityCropsController < ApplicationController
   # Deviseの認証用フィルター
-  before_action :authenticate_producer!, only: [:create]
+  before_action :authenticate_producer!, only: [:create, :my_list]
 
   # アクションの共通化
   before_action :set_commodity_crop, only: [:show, :destroy]
@@ -49,6 +49,11 @@ class Api::V1::CommodityCropsController < ApplicationController
     else
       render json: { error: "商品作物が見つかりませんでした" }, status: :not_found
     end
+  end
+
+  def my_list
+    commodity_crops = current_producer.commodity_crops.includes(:crop, commodity_crop_image)
+    render json: commodity_crops, each_serializer: CommodityCropListSerializer
   end
 
   private
