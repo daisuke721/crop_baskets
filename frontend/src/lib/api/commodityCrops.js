@@ -36,3 +36,9 @@ export const deleteCommodityCrop = async (id) => {
     throw error;
   }
 };
+
+// 生産者ごとの出品作物一覧を取得
+export const fetchMyCommodityCrops = async () => {
+  const response = await apiClient.get('/commodity_crops/my_list');
+  return response.data;
+};
