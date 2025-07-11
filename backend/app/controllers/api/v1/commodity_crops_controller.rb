@@ -52,7 +52,7 @@ class Api::V1::CommodityCropsController < ApplicationController
   end
 
   def my_list
-    commodity_crops = current_producer.commodity_crops.includes(:crop, commodity_crop_image)
+    commodity_crops = current_producer.commodity_crops.includes(:crop, :commodity_crop_images)
     render json: commodity_crops, each_serializer: CommodityCropListSerializer
   end
 
