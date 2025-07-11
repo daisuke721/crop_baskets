@@ -16,6 +16,7 @@ class Api::V1::CommodityCropsController < ApplicationController
 
   def create
     commodity_crop = CommodityCrop.new(commodity_crop_params)
+    # ログイン中の生産者を紐付け
     commodity_crop.producer = current_producer
 
     Rails.logger.info "params[:commodity_crop][:images] = #{params.dig(:commodity_crop, :images).inspect}"
@@ -42,6 +43,20 @@ class Api::V1::CommodityCropsController < ApplicationController
     end
   end
 
+  def update
+    # ログイン中の生産者と商品作物が一致しなければエラー
+    if @commodity_crop.producer != current_producer
+      return render json: { error: "権限がありません" }, status: :unauthorized
+    end
+
+    # 商品作物を更新
+    if @commodity_crop.update(commodity_crop_params)
+      render json: @commodity_crop, serializer: CommodityCropDetailSerializer
+    else
+      render json: { errors: @commodity_crop.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     if @commodity_crop
       @commodity_crop.destroy
@@ -51,7 +66,9 @@ class Api::V1::CommodityCropsController < ApplicationController
     end
   end
 
+  # ログイン中の生産者が出品した作物一覧
   def my_list
+    # 出品した商品作物に紐づく作物情報・画像を取得
     commodity_crops = current_producer.commodity_crops.includes(:crop, :commodity_crop_images)
     render json: commodity_crops, each_serializer: CommodityCropListSerializer
   end
