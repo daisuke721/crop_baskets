@@ -10,10 +10,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :crops, only: [:index, :show]
-      resources :commodity_crops, only: [:index, :show, :create, :update, :destroy]
+      resources :commodity_crops, only: [:index, :show, :create, :update, :destroy] do
         collection do
           get :my_list
         end
+      end
       resources :cart_items, only: [:index, :create, :destroy]
       resources :orders, only: [:index, :new, :create, :show]
       # 簡単出品用のルーティング
