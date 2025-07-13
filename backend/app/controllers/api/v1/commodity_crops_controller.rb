@@ -51,6 +51,14 @@ class Api::V1::CommodityCropsController < ApplicationController
 
     # 商品作物を更新
     if @commodity_crop.update(commodity_crop_params)
+      # 新しく追加された画像があれば保存
+      if params.dig(:commodity_crop, :images).present?
+        Array(params[:commodity_crop][:images]).each do |image|
+          commodity_crop_image = @commodity_crop.commodity_crop_images.create
+          commodity_crop_image.image.attach(image)
+        end
+      end
+
       render json: @commodity_crop, serializer: CommodityCropDetailSerializer
     else
       render json: { errors: @commodity_crop.errors.full_messages }, status: :unprocessable_entity
