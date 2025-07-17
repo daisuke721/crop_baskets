@@ -16,7 +16,7 @@ const Page = () => {
     <>
       <div className="content-area">
         <div className="w-full px-10 pt-5">
-          <h1 className="text-center font-noto font-bold text-stone-700 mb-4">生産者画面</h1>
+          <h1 className="text-center font-noto text-xl font-bold text-stone-700 mb-4">生産者画面</h1>
           <div className="flex flex-col space-y-3">
             <button
               onClick={() => router.push('/create')}
@@ -25,7 +25,7 @@ const Page = () => {
               出品する
             </button>
             <button
-              onClick={() => router.push('/commodity_crop')}
+              onClick={() => router.push('/producer/commodity_crop')}
               className="font-noto py-2 bg-green-300 text-white rounded-lg cursor-pointer hover:bg-green-500 transition"
             >
               出品作物リスト
