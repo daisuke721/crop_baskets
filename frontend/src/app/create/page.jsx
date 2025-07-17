@@ -18,8 +18,8 @@ import { AnalyzingModal } from '../../components/AnalyzingModal';
 
 const Page = () => {
   const router = useRouter();
-  const handleHome = () => {
-    router.push('/');
+  const handleDashboard = () => {
+    router.push('/producer/dashboard');
   };
 
   // 画像のアップロード
@@ -470,7 +470,7 @@ const Page = () => {
           setIsCreateModalOpen(false);
           resetForm();
         }}
-        onGoHome={handleHome}
+        onGoDashboard={handleDashboard}
       />
     </>
   );
