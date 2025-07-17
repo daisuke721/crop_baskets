@@ -1,9 +1,9 @@
 class Api::V1::CommodityCropsController < ApplicationController
   # Deviseの認証用フィルター
-  before_action :authenticate_producer!, only: [:create, :my_list]
+  before_action :authenticate_producer!, only: [:create, :update, :my_list]
 
   # アクションの共通化
-  before_action :set_commodity_crop, only: [:show, :destroy]
+  before_action :set_commodity_crop, only: [:show, :update, :destroy]
 
   def index
     commodity_crops = CommodityCrop.includes(:crop, :commodity_crop_images).all
