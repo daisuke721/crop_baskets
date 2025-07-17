@@ -9,7 +9,7 @@
 
 /* モバイルの幅を適切に調整 */
 .mobile-container {
-  @apply w-full h-[100dvh] max-w-[480px] mx-auto bg-white flex flex-col relative;
+  @apply w-full h-[100dvh] max-w-[480px] mx-auto bg-white flex flex-col relative overflow-hidden;
 }
 
 /* スクロール可能エリア */
