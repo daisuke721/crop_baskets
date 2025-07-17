@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { deleteCommodityCrop, fetchMyCommodityCrops } from '../../../lib/api/commodityCrops';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [crops, setCrops] = useState([]);
+  const router = useRouter();
 
   const loadCrops = async () => {
     try {
@@ -33,7 +35,7 @@ const Page = () => {
     <>
       <div className="content-area">
         <div className="p-4">
-          <h1 className="text-xl font-noto font-bold mb-4">出品作物一覧</h1>
+          <h1 className="text-xl text-center font-noto font-bold mb-4">出品作物リスト</h1>
           <ul className="space-y-4">
             {crops.map((crop) => (
               <li key={crop.id} className="border p-3 rounded-md">
@@ -46,6 +48,12 @@ const Page = () => {
                 </div>
                 <p className="font-noto truncate">商品名: {crop.name}</p>
                 <p className='"font-noto'>価格: {crop.price.toLocaleString('ja-JP')}円</p>
+                <button
+                  onClick={() => router.push(`/producer/commodity_crop/edit/${crop.id}`)}
+                  className="text-blue-500 underline text-sm mr-3"
+                >
+                  編集する
+                </button>
                 <button onClick={() => handleDelete(crop.id)} className="text-red-500 underline font-noto text-sm mt-2">
                   削除する
                 </button>
