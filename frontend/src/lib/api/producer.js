@@ -16,8 +16,10 @@ export const signUpProducer = async ({ email, password, passwordConfirmation }) 
 // ログイン
 export const signInProducer = async ({ email, password }) => {
   const response = await apiClient.post('/producers/sign_in', {
-    email,
-    password,
+    producer: {
+      email,
+      password,
+    },
   });
 
   return response;
