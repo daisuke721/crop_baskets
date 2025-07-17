@@ -14,27 +14,36 @@ const Page = () => {
   };
   return (
     <>
-      <div className="p-4">
-        <h1>生産者ダッシュボード</h1>
-        <div>
-          <button onClick={handleSignOut} className="text-pink-300 underline text-sm">
-            ログアウト
-          </button>
+      <div className="content-area">
+        <div className="w-full px-10 pt-5">
+          <h1 className="text-center font-noto font-bold text-stone-700 mb-4">生産者画面</h1>
+          <div className="flex flex-col space-y-3">
+            <button
+              onClick={() => router.push('/create')}
+              className="font-noto py-2 bg-honey text-white rounded-lg cursor-pointer hover:bg-yellow-600 transition"
+            >
+              出品する
+            </button>
+            <button
+              onClick={() => router.push('/commodity_crop')}
+              className="font-noto py-2 bg-green-300 text-white rounded-lg cursor-pointer hover:bg-green-500 transition"
+            >
+              出品作物リスト
+            </button>
+            <button className="font-noto py-2 bg-blue-300 text-white rounded-lg cursor-pointer hover:bg-blue-500 transition">
+              生産者情報
+            </button>
+            <button className="font-noto py-2 bg-purple-300 text-white rounded-lg cursor-pointer hover:bg-purple-500 transition">
+              受け取りポイント管理
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="font-noto py-2 text-white rounded-lg bg-pink-300 cursor-pointer hover:bg-pink-500 transition"
+            >
+              ログアウト
+            </button>
+          </div>
         </div>
-        <div>
-          <a href="/create">出品する</a>
-        </div>
-        <ul className="space-y-2">
-          <li>
-            <a href="/producer/profile">プロフィール</a>
-          </li>
-          <li>
-            <a href="/producer/commodity_crop">出品作物リスト</a>
-          </li>
-          <li>
-            <a href="/producer/pickups">受け取りポイント管理</a>
-          </li>
-        </ul>
       </div>
     </>
   );
