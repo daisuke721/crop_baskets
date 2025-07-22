@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       resources :orders, only: [:index, :new, :create, :show]
       # 簡単出品用のルーティング
       resources :simple_listings, only: [:create]
+      # 受け取りポイントのルーティング
+      resources :receiving_points
     end
   end
 
