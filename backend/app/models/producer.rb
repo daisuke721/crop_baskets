@@ -6,4 +6,5 @@ class Producer < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
   has_many :commodity_crops, dependent: :destroy
+  has_many :receiving_points, dependent: :destroy
 end
