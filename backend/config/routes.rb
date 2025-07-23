@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       # 簡単出品用のルーティング
       resources :simple_listings, only: [:create]
       # 受け取りポイントのルーティング
-      resources :receiving_points
+      resources :receiving_points, only: [:index, :show, :create, :update, :destroy]
     end
   end
 
