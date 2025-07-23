@@ -1,6 +1,6 @@
 class Api::V1::ReceivingPointsController < ApplicationController
-  before_action :authenticate_producer!, only: [:create, :update, :destroy]
-  before_action :set_receiving_point, only: [:show, :update, :destroy]
+  before_action :authenticate_producer!, only: [:create, :destroy]
+  before_action :set_receiving_point, only: [:show, :destroy]
 
   def index
     receiving_points = ReceivingPoint.all
@@ -16,7 +16,7 @@ class Api::V1::ReceivingPointsController < ApplicationController
     if receiving_point.save
       render json: receiving_point, status: :created
     else
-      render json: { errors: receiving_point.errors.full_message }, status: :unprocessable_entity
+      render json: { errors: receiving_point.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
