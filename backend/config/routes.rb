@@ -21,6 +21,9 @@ Rails.application.routes.draw do
       resources :simple_listings, only: [:create]
       # 受け取りポイントのルーティング
       resources :receiving_points, only: [:index, :show, :create, :update, :destroy]
+        collection do
+          get :my_list
+        end
     end
   end
 
