@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_17_143352) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_25_155945) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -57,7 +57,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_17_143352) do
   end
 
   create_table "commodity_crops", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "producer_id"
+    t.bigint "producer_id", null: false
     t.bigint "crop_id", null: false
     t.string "name", null: false
     t.string "variety", limit: 50, null: false
@@ -67,8 +67,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_17_143352) do
     t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "receiving_point_id", null: false
     t.index ["crop_id"], name: "index_commodity_crops_on_crop_id"
     t.index ["producer_id"], name: "index_commodity_crops_on_producer_id"
+    t.index ["receiving_point_id"], name: "index_commodity_crops_on_receiving_point_id"
   end
 
   create_table "consumers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -138,5 +140,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_17_143352) do
   add_foreign_key "cart_items", "commodity_crops"
   add_foreign_key "commodity_crop_images", "commodity_crops"
   add_foreign_key "commodity_crops", "crops"
+  add_foreign_key "commodity_crops", "producers"
+  add_foreign_key "commodity_crops", "receiving_points"
   add_foreign_key "receiving_points", "producers"
 end
