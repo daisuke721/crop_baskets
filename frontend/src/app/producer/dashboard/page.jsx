@@ -33,8 +33,11 @@ const Page = () => {
             <button className="font-noto py-2 bg-blue-300 text-white rounded-lg cursor-pointer hover:bg-blue-500 transition">
               生産者情報
             </button>
-            <button className="font-noto py-2 bg-purple-300 text-white rounded-lg cursor-pointer hover:bg-purple-500 transition">
-              受け取りポイント管理
+            <button
+              onClick={() => router.push('/producer/receiving_points')}
+              className="font-noto py-2 bg-purple-300 text-white rounded-lg cursor-pointer hover:bg-purple-500 transition"
+            >
+              受け取り所の管理
             </button>
             <button
               onClick={handleSignOut}
