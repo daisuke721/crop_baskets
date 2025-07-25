@@ -84,7 +84,7 @@ class Api::V1::CommodityCropsController < ApplicationController
   private
 
   def commodity_crop_params
-    params.require(:commodity_crop).permit(:crop_id, :name, :variety, :harvest_day, :capacity, :price, :description)
+    params.require(:commodity_crop).permit(:crop_id, :name, :variety, :harvest_day, :capacity, :price, :description, :receiving_point_id)
   end
 
   def set_commodity_crop
