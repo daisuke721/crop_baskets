@@ -1,5 +1,5 @@
 class Api::V1::ReceivingPointsController < ApplicationController
-  before_action :authenticate_producer!, only: [:create, :destroy]
+  before_action :authenticate_producer!, only: [:create, :destroy, :my_list]
   before_action :set_receiving_point, only: [:show, :destroy]
 
   def index
@@ -27,6 +27,12 @@ class Api::V1::ReceivingPointsController < ApplicationController
     else
       render json: { error: '削除できません' }, status: :unauthorized
     end
+  end
+
+  # ログイン中の生産者が登録した受け取り所
+  def my_list
+    receiving_points = current_producer.receiving_points
+    render json: receiving_points
   end
 
   private
