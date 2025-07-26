@@ -7,6 +7,7 @@ import { fetchCrops } from '../../../../../lib/api/crops';
 import DatePicker from 'react-datepicker';
 import { ja } from 'date-fns/locale';
 import { EditModalContent } from '../../../../../components/EditModalContent';
+import { fetchMyReceivingPoints } from '../../../../../lib/api/receivingPoints';
 
 const Page = () => {
   const router = useRouter();
@@ -29,6 +30,8 @@ const Page = () => {
   const [cropNames, setCropNames] = useState([]);
   const [selectedCrop, setSelectedCrop] = useState('');
   const [origins, setOrigins] = useState([]);
+  const [receivingPoints, setReceivingPoints] = useState([]);
+  const [selectedReceivingPointId, setSelectedReceivingPointId] = useState('');
 
   useEffect(() => {
     const load = async () => {
@@ -46,6 +49,9 @@ const Page = () => {
         setExistingImages(crop.commodity_crop_images);
         setSelectedCrop(crop.crop.name);
 
+        // 受け取り所の初期選択
+        setSelectedReceivingPointId(crop.receiving_point.id);
+
         const cropList = await fetchCrops();
         setCrops(cropList);
         const names = [...new Set(cropList.map((c) => c.name))].sort((a, b) => a.localeCompare(b, 'ja'));
@@ -56,6 +62,11 @@ const Page = () => {
           .map((c) => ({ id: c.id, producing_area: c.producing_area }))
           .sort((a, b) => a.producing_area.localeCompare(b.producing_area, 'ja'));
         setOrigins(filteredOrigins);
+
+        // 受け取り所の一覧を取得
+        const token = localStorage.getItem('producerToken');
+        const points = await fetchMyReceivingPoints(token);
+        setReceivingPoints(points);
       } catch (err) {
         console.error(err);
       }
@@ -120,6 +131,11 @@ const Page = () => {
       newErrors.price = '価格は1円以上で入力してください';
     }
 
+    // 受け取り所のバリデーション
+    if (!selectedReceivingPointId) {
+      newErrors.receiving_point_id = '受け取り所を選択してください';
+    }
+
     // 説明のバリデーション
     if (!formData.description.trim()) {
       newErrors.description = '商品の説明を入力してください';
@@ -142,6 +158,10 @@ const Page = () => {
     images.forEach((img) => {
       fd.append('commodity_crop[images][]', img);
     });
+
+    if (selectedReceivingPointId) {
+      fd.append('commodity_crop[receiving_point_id]', selectedReceivingPointId);
+    }
 
     try {
       await updateCommodityCrop(id, fd);
@@ -325,6 +345,24 @@ const Page = () => {
                 </div>
                 {/* 価格のエラーメッセージを表示 */}
                 {errors && <p className="text-red-500 text-center mt-2">{errors.price}</p>}
+              </div>
+
+              <div className="flex flex-col font-noto text-stone-700">
+                <label>受け取り所</label>
+                <select
+                  value={selectedReceivingPointId}
+                  onChange={(e) => setSelectedReceivingPointId(e.target.value)}
+                  className="font-roboto border p-3 rounded-md outline-none"
+                >
+                  <option value="">選択してください</option>
+                  {receivingPoints.map((rp) => (
+                    <option key={rp.id} value={rp.id}>
+                      {rp.name}({rp.address})
+                    </option>
+                  ))}
+                </select>
+                {/* 受け取り所のエラーメッセージを表示 */}
+                {errors && <p className="text-red-500 text-center mt-2">{errors.receiving_point_id}</p>}
               </div>
 
               <div className="flex flex-col font-noto text-stone-700">
