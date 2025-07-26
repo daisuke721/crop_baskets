@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_25_155945) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_26_155921) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -112,6 +112,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_25_155945) do
     t.index ["payment_method_id"], name: "index_orders_on_payment_method_id"
   end
 
+  create_table "producer_informations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "producer_id", null: false
+    t.string "name"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["producer_id"], name: "index_producer_informations_on_producer_id"
+  end
+
   create_table "producers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -142,5 +151,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_25_155945) do
   add_foreign_key "commodity_crops", "crops"
   add_foreign_key "commodity_crops", "producers"
   add_foreign_key "commodity_crops", "receiving_points"
+  add_foreign_key "producer_informations", "producers"
   add_foreign_key "receiving_points", "producers"
 end
