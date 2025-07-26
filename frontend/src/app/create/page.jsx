@@ -15,6 +15,7 @@ import { simpleListing } from '../../lib/api/simpleListings';
 import { CreateModalContent } from '../../components/CreateModalContent';
 import { BottomNavigationBar } from '../../Layout/BottomNavigationBar';
 import { AnalyzingModal } from '../../components/AnalyzingModal';
+import { fetchMyReceivingPoints } from '../../lib/api/receivingPoints';
 
 const Page = () => {
   const router = useRouter();
@@ -98,6 +99,19 @@ const Page = () => {
   // モーダルの表示
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
+  // 受け取り所をリスト
+  const [receivingPoints, setReceivingPoints] = useState([]);
+  // 選択された受け取り所名
+  const [selectedReceivingPointId, setSelectedReceivingPointId] = useState('');
+
+  // 受け取り所のAPIを呼び出し
+  useEffect(() => {
+    const token = localStorage.getItem('producerToken');
+    fetchMyReceivingPoints(token)
+      .then((data) => setReceivingPoints(data))
+      .catch((error) => console.error('受け取り所をの取得に失敗しました', error));
+  }, []);
+
   // 出品処理
   const handleSubmit = async () => {
     // バリデーションを追加
@@ -138,6 +152,11 @@ const Page = () => {
       newErrors.price = '価格は1円以上で入力してください';
     }
 
+    // 受け取り所のバリデーション
+    if (!selectedReceivingPointId) {
+      newErrors.receiving_point_id = '受け取り所を選択してください';
+    }
+
     // 説明のバリデーション
     if (!formData.description.trim()) {
       newErrors.description = '商品の説明を入力してください';
@@ -157,6 +176,10 @@ const Page = () => {
     if (harvestDate) {
       const formatted = harvestDate.toISOString().split('T')[0];
       formDataToSend.append('commodity_crop[harvest_day]', formatted);
+    }
+
+    if (selectedReceivingPointId) {
+      formDataToSend.append('commodity_crop[receiving_point_id]', selectedReceivingPointId);
     }
 
     Object.keys(formData).forEach((key) => {
@@ -426,6 +449,26 @@ const Page = () => {
               </div>
               {/* 価格のエラーメッセージを表示 */}
               {errors && <p className="text-red-500 text-center mt-2">{errors.price}</p>}
+            </div>
+
+            {/* 受け取り所の選択 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>受け取り所</label>
+              <select
+                value={selectedReceivingPointId}
+                onChange={(e) => setSelectedReceivingPointId(e.target.value)}
+                className={`font-robot border p-3 rounded-md outline-none ${selectedReceivingPointId ? 'text-black' : 'text-gray-400'}`}
+                required
+              >
+                <option value="">選択してください</option>
+                {receivingPoints.map((rp) => (
+                  <option key={rp.id} value={rp.id}>
+                    {rp.name}({rp.address})
+                  </option>
+                ))}
+              </select>
+              {/* 受け取り所のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.receiving_point_id}</p>}
             </div>
 
             {/* 説明文の入力 */}
