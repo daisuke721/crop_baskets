@@ -6,7 +6,6 @@ import { fetchCommodityCropById } from '../../../lib/api/commodityCrops';
 import { addToCart } from '../../../lib/api/cart';
 
 import { DetailImagesSlider } from '../../../components/DetailImagesSlider';
-import { BottomFooterLayout } from '../../../Layout/BottomFooterLayout';
 import { CartModalContent } from '../../../components/CartModalContent';
 import { BottomNavigationBar } from '../../../Layout/BottomNavigationBar';
 
@@ -94,6 +93,14 @@ const Page = ({ params }) => {
                       day: '2-digit',
                     })}
                   </p>
+                </div>
+                <div className="flex justify-between items-center font-noto pb-2 text-base">
+                  <p>受取場所</p>
+                  <p>{commodityCrop.receiving_point.name}</p>
+                </div>
+                <div className="flex justify-between items-center font-noto pb-2 text-base">
+                  <p>受取住所</p>
+                  <p>{commodityCrop.receiving_point.address}</p>
                 </div>
               </div>
               <div className="flex flex-col font-noto py-2 border-b pb-1 text-base">
