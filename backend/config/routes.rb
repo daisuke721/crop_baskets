@@ -25,6 +25,12 @@ Rails.application.routes.draw do
           get :my_list
         end
       end
+      # 生産者informationのルーティング
+      resources :producer_informations, only:[:create, :update, :destroy] do
+        collection do
+          get :my_information
+        end
+      end
     end
   end
 
