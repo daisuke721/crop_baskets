@@ -5,10 +5,12 @@ class Api::V1::ProducerInformationsController < ApplicationController
     info = current_producer.build_producer_information(producer_information_params)
 
     if info.save
-      info.image.attach(params[:producer_information][:image]) if params[:producer_information][:image].present?
-      render json: info, status: :created
+      if params.dig(:producer_information, :image).present?
+        info.image.attach(params[:producer_information][:image])
+      end
+      render json: info, serializer: ProducerInformationSerializer, status: :created
     else
-      render json: { errors: info.errors.full_messages }, status: :unprocessable_entity
+        render json: { errors: info.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -24,9 +26,9 @@ class Api::V1::ProducerInformationsController < ApplicationController
   def my_information
     info = current_producer.producer_information
     if info
-      render json: info
+      render json: info, serializer: ProducerInformationSerializer, status: :ok
     else
-      render json: { error: "登録情報がありません" }, status: :not_found
+      render json: { producer_information: nil }, status: :ok
     end
   end
 
