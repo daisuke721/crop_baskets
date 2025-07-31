@@ -64,8 +64,7 @@ const Page = () => {
         setOrigins(filteredOrigins);
 
         // 受け取り所の一覧を取得
-        const token = localStorage.getItem('producerToken');
-        const points = await fetchMyReceivingPoints(token);
+        const points = await fetchMyReceivingPoints();
         setReceivingPoints(points);
       } catch (err) {
         console.error(err);
