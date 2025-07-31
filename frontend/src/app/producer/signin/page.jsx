@@ -16,8 +16,12 @@ const Page = () => {
 
     try {
       const res = await signInProducer({ email, password });
-      const token = res.headers['authorization'];
-      localStorage.setItem('producerToken', token);
+      const authHeader = res.headers['authorization'];
+      const raw = authHeader?.replace(/^Bearer\s+/i, '');
+      if (!raw) {
+        throw new Error('トークン取得失敗');
+      }
+      localStorage.setItem('producerToken', raw);
 
       router.push('/producer/dashboard');
     } catch (err) {

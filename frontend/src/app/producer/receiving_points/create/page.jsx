@@ -72,19 +72,12 @@ const Page = () => {
     setError('');
 
     try {
-      const token = localStorage.getItem('producerToken');
-      console.log('送信データ:', formData);
-      console.log('送信トークン:', token);
-
-      const res = await createReceivingPoint(
-        {
-          name: formData.name,
-          address: formData.address,
-          latitude: parseFloat(formData.latitude),
-          longitude: parseFloat(formData.longitude),
-        },
-        token,
-      );
+      const res = await createReceivingPoint({
+        name: formData.name,
+        address: formData.address,
+        latitude: parseFloat(formData.latitude),
+        longitude: parseFloat(formData.longitude),
+      });
 
       console.log('登録成功:', res);
       router.push('/producer/dashboard');

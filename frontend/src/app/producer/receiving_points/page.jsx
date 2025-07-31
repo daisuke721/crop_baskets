@@ -10,24 +10,22 @@ const Page = () => {
   const [receivingPoints, setReceivingPoints] = useState([]);
   const [error, setError] = useState('');
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('producerToken') : null;
-
   // 自分の受け取り所一覧を取得
   const loadReceivingPoints = useCallback(async () => {
     try {
-      const data = await fetchMyReceivingPoints(token);
+      const data = await fetchMyReceivingPoints();
       setReceivingPoints(data);
     } catch (err) {
       console.error('取得に失敗:', err);
       setError('一覧の取得に失敗しました');
     }
-  }, [token]);
+  }, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm('この受け取り所を削除しますか？')) return;
 
     try {
-      await deleteReceivingPoint(id, token);
+      await deleteReceivingPoint(id);
       setReceivingPoints((prev) => prev.filter((point) => point.id !== id));
     } catch (err) {
       console.error('削除エラー:', err);
@@ -36,8 +34,8 @@ const Page = () => {
   };
 
   useEffect(() => {
-    if (token) loadReceivingPoints();
-  }, [token, loadReceivingPoints]);
+    loadReceivingPoints();
+  }, [loadReceivingPoints]);
 
   return (
     <>
