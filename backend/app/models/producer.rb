@@ -7,4 +7,5 @@ class Producer < ApplicationRecord
 
   has_many :commodity_crops, dependent: :destroy
   has_many :receiving_points, dependent: :destroy
+  has_one :producer_information, dependent: :destroy
 end
