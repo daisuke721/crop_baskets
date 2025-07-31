@@ -1,5 +1,5 @@
 class ProducerInformationSerializer < ActiveModel::Serializer
-  attributes :id, :name, :comment, image_url
+  attributes :id, :name, :comment, :image_url
 
   # rails_blob_urlを使って画像のURLを取得
   def image_url
