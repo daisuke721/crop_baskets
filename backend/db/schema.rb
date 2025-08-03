@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_26_155921) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_03_051244) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -68,9 +68,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_26_155921) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "receiving_point_id", null: false
+    t.string "grade"
+    t.text "condition"
     t.index ["crop_id"], name: "index_commodity_crops_on_crop_id"
+    t.index ["grade"], name: "index_commodity_crops_on_grade"
     t.index ["producer_id"], name: "index_commodity_crops_on_producer_id"
     t.index ["receiving_point_id"], name: "index_commodity_crops_on_receiving_point_id"
+    t.check_constraint "(`grade` is null) or (`grade` in (_utf8mb4'A',_utf8mb4'B'))", name: "chk_commodity_crops_grade_ab"
   end
 
   create_table "consumers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
