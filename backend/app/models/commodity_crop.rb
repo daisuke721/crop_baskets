@@ -11,4 +11,9 @@ class CommodityCrop < ApplicationRecord
   validates :capacity, numericality: { greater_than: 0 }
   validates :price, numericality: { greater_than: 0 }
   validates :description, presence: true
+  validates :grade,
+            inclusion: { in: %w[A B],
+                          message: "は A または B を指定してください"},
+            allow_nil: true
+  validates :condition, length: { maximum: 2000 }, allow_nil: true
 end
