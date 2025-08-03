@@ -1,6 +1,6 @@
 class CommodityCropDetailSerializer < ActiveModel::Serializer
   # 作物の詳細に必要な基本情報
-  attributes :id, :name, :variety, :harvest_day, :capacity, :price, :description, :crop_name, :crop_producing_area, :receiving_point
+  attributes :id, :name, :variety, :harvest_day, :capacity, :price, :description, :crop_name, :crop_producing_area, :receiving_point, :grade, :condition
 
   # CommodityCropImageSerializerを利用し、作物に関連する画像を取得
   has_many :commodity_crop_images, serializer: CommodityCropImageSerializer
