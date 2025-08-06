@@ -41,6 +41,8 @@ const Page = () => {
     variety: '',
     capacity: '',
     price: '',
+    grade: '',
+    condition: '',
     description: '',
   });
 
@@ -53,12 +55,16 @@ const Page = () => {
       variety: '',
       capacity: '',
       price: '',
+      grade: '',
+      condition: '',
       description: '',
     });
     setHarvestDate(null);
     setSelectedCrop('');
     setOrigins([]);
     setErrors({});
+    setVarietyCandidates([]);
+    setSelectedReceivingPointId([]);
   };
 
   // 入力フィールドの変更
@@ -74,6 +80,8 @@ const Page = () => {
   const [selectedCrop, setSelectedCrop] = useState('');
   // 産地リスト
   const [origins, setOrigins] = useState([]);
+  // 品種候補のステート
+  const [varietyCandidates, setVarietyCandidates] = useState([]);
 
   useEffect(() => {
     // 作物リストをAPIから取得
@@ -152,6 +160,16 @@ const Page = () => {
       newErrors.price = '価格は1円以上で入力してください';
     }
 
+    // 等級のバリデーション
+    if (formData.grade !== 'A' && formData.grade !== 'B') {
+      newErrors.grade = 'AまたはBで入力してください';
+    }
+
+    // 状態のバリデーション
+    if (!formData.condition) {
+      newErrors.condition = '状態を入力してください';
+    }
+
     // 受け取り所のバリデーション
     if (!selectedReceivingPointId) {
       newErrors.receiving_point_id = '受け取り所を選択してください';
@@ -220,24 +238,48 @@ const Page = () => {
       // 取得した作物名で<select>の作物名を自動選択
       setSelectedCrop(data.name);
 
+      // 品種候補を配列化
+      const candidates = (data.variety || '')
+        .split(/[、,. ]/)
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .slice(0, 5);
+      setVarietyCandidates(candidates);
+
       // 選択された作物名に対応する産地リストを取得&ソート
       const filteredOrigins = crops
         .filter((crop) => crop.name === data.name)
         .map((crop) => ({ id: crop.id, producing_area: crop.producing_area }))
-        .sort((a, b) => a.producing_area.localeCompare(b, 'ja'));
+        .sort((a, b) => a.producing_area.localeCompare(b.producing_area, 'ja'));
 
       setOrigins(filteredOrigins);
 
       // もし、取得できた産地リストがあれば1番目の産地を選択
       const firstOrigin = filteredOrigins[0];
 
+      // 収穫日（YYYY-MM-DD）を Date に変換。無ければ今日にフォールバック。
+      const yyyyMmDd =
+        data.harvest_day && /^\d{4}-\d{2}-\d{2}$/.test(data.harvest_day)
+          ? data.harvest_day
+          : new Date().toISOString().split('T')[0];
+      setHarvestDate(new Date(`${yyyyMmDd}T00:00:00`));
+
+      // 受け取り所：未選択なら先頭を自動セット
+      if (!selectedReceivingPointId && receivingPoints?.length > 0) {
+        setSelectedReceivingPointId(String(receivingPoints[0].id));
+      }
+
       // 既存のフォーム入力データをAI結果で上書き
       setFormData((prev) => ({
         ...prev, // 既存データを残す
         name: data.product_name ?? prev.name,
+        variety: candidates[0] ?? prev.variety ?? '',
         price: data.price?.match(/\d+/)?.[0] ?? prev.price,
         description: data.description ?? prev.description,
         crop_id: firstOrigin?.id ?? prev.crop_id,
+        capacity: data.capacity || prev.capacity || '1',
+        grade: data.grade || prev.grade || 'A',
+        condition: data.condition || prev.condition || (data.grade === 'B' ? '訳あり' : '秀品'),
       }));
     } catch (error) {
       // API呼び出しが失敗した場合エラーハンドリング
@@ -368,6 +410,22 @@ const Page = () => {
                 onChange={handleChange}
                 className="font-roboto border p-3 rounded-md outline-none"
               />
+              {/* AIからの候補を選択可能にする */}
+              {varietyCandidates.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {varietyCandidates.map((v) => (
+                    <button
+                      type="button"
+                      key={v}
+                      onClick={() => setFormData((prev) => ({ ...prev, variety: v }))}
+                      className="px-2 py-1 border rounded-md hover:bg-gray-50"
+                      title="クリックで入力欄に反映"
+                    >
+                      {v}
+                    </button>
+                  ))}
+                </div>
+              )}
               {/* 品種名のエラーメッセージを表示 */}
               {errors && <p className="text-red-500 text-center mt-2">{errors.variety}</p>}
             </div>
@@ -451,13 +509,48 @@ const Page = () => {
               {errors && <p className="text-red-500 text-center mt-2">{errors.price}</p>}
             </div>
 
+            {/* 等級を入力 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>等級</label>
+              <div className="space-x-2">
+                <input
+                  type="text"
+                  name="grade"
+                  value={formData.grade}
+                  placeholder="入力してください"
+                  onChange={handleChange}
+                  className="font-roboto border p-3 rounded-md outline-none"
+                />
+                <span className="font-noto text-stone-700">品</span>
+              </div>
+              {/* 等級のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.grade}</p>}
+            </div>
+
+            {/* 状態を入力 */}
+            <div className="flex flex-col font-noto text-stone-700">
+              <label>状態</label>
+              <div className="space-x-2">
+                <input
+                  type="text"
+                  name="condition"
+                  value={formData.condition}
+                  placeholder="入力してください"
+                  onChange={handleChange}
+                  className="font-roboto border p-3 rounded-md outline-none"
+                />
+              </div>
+              {/* 状態のエラーメッセージを表示 */}
+              {errors && <p className="text-red-500 text-center mt-2">{errors.condition}</p>}
+            </div>
+
             {/* 受け取り所の選択 */}
             <div className="flex flex-col font-noto text-stone-700">
               <label>受け取り所</label>
               <select
                 value={selectedReceivingPointId}
                 onChange={(e) => setSelectedReceivingPointId(e.target.value)}
-                className={`font-robot border p-3 rounded-md outline-none ${selectedReceivingPointId ? 'text-black' : 'text-gray-400'}`}
+                className={`font-noto border p-3 rounded-md outline-none ${selectedReceivingPointId ? 'text-black' : 'text-gray-400'}`}
                 required
               >
                 <option value="">選択してください</option>
