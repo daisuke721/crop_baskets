@@ -8,6 +8,7 @@ import { addToCart } from '../../../lib/api/cart';
 import { DetailImagesSlider } from '../../../components/DetailImagesSlider';
 import { CartModalContent } from '../../../components/CartModalContent';
 import { BottomNavigationBar } from '../../../Layout/BottomNavigationBar';
+import { fetchMyProducerInformation } from '../../../lib/api/producerInformations';
 
 const Page = ({ params }) => {
   const router = useRouter();
@@ -36,6 +37,13 @@ const Page = ({ params }) => {
     loadCommodityCrop();
   }, [id]);
 
+  // 生産者アイコンと名前
+  const [summary, setSummary] = useState(null);
+
+  useEffect(() => {
+    (async () => setSummary(await fetchMyProducerInformation()))();
+  }, []);
+
   // 商品作物をカートに追加
   const handleAddToCart = async () => {
     if (!commodityCrop) return;
@@ -50,16 +58,21 @@ const Page = ({ params }) => {
     <>
       <div className="content-area">
         <div className="px-5 mt-5">
-          {/* <img
-            src={commodityCrop.commodity_crop_images[0].image_url}
-            alt="商品画像"
-            className="w-full h-80 object-cover"
-          /> */}
           {/* 複数の写真を表示できるようにスライダーで実装 */}
           <DetailImagesSlider images={commodityCrop.commodity_crop_images} />
           <div className="px-5">
             <h1 className="text-xl font-noto font-bold mt-5">{commodityCrop.name}</h1>
-            <div className="py-5 mb-3">
+            <div className="py-1">
+              <div className="flex items-center space-x-3">
+                <img
+                  src={summary?.image_url || '/placeholder.png'}
+                  alt="生産者アイコン"
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <div className="text-xl font-noto">{summary?.name || '未設定の生産者'}</div>
+              </div>
+            </div>
+            <div className="pb-5 mb-3">
               <div className="flex justify-between items-baseline border-b pb-1">
                 <div className="flex items-center font-roboto font-semibold text-xl">
                   <p>{commodityCrop.capacity.toLocaleString('ja-JP')}</p>
@@ -70,6 +83,7 @@ const Page = ({ params }) => {
                   <p>{commodityCrop.price.toLocaleString('ja-JP')}</p>
                 </div>
               </div>
+
               <div className="py-2 border-b pb-1">
                 <div className="flex justify-between items-center font-noto pb-2 text-base">
                   <p>作物名</p>
@@ -95,6 +109,17 @@ const Page = ({ params }) => {
                   </p>
                 </div>
                 <div className="flex justify-between items-center font-noto pb-2 text-base">
+                  <p>等　級</p>
+                  <p>{commodityCrop.grade}品</p>
+                </div>
+                <div className="flex justify-between items-center font-noto pb-2 text-base">
+                  <p>状　態</p>
+                  <p>{commodityCrop.condition}</p>
+                </div>
+              </div>
+
+              <div className="py-2 border-b pb-1">
+                <div className="flex justify-between items-center font-noto pb-2 text-base">
                   <p>受取場所</p>
                   <p>{commodityCrop.receiving_point.name}</p>
                 </div>
@@ -108,6 +133,7 @@ const Page = ({ params }) => {
                 <p className="py-2">{commodityCrop.description}</p>
               </div>
             </div>
+
             <div className="flex justify-between items-center w-full space-x-5">
               <button
                 onClick={handleOrder}
