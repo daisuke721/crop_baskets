@@ -21,6 +21,7 @@ class CommodityCropListSerializer < ActiveModel::Serializer
     {
       id: object.receiving_point.id,
       name: object.receiving_point.name,
+      address: object.receiving_point.address
     }
   end
 end
