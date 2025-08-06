@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchCartItems, removeCartItem } from '../../lib/api/cart';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { BottomFooterLayout } from '../../Layout/BottomFooterLayout';
 import { BottomNavigationBar } from '../../Layout/BottomNavigationBar';
 
 const Page = () => {
@@ -52,6 +51,11 @@ const Page = () => {
                   <p className="font-noto text-lg pb-3 line-clamp-2 overflow-hidden h-14 w-full">
                     {item.commodity_crop.name}
                   </p>
+                  <div className="text-sm text-gray-600">
+                    <p>作物状態:{item.commodity_crop.condition}</p>
+                    <p>受取場所:{item.commodity_crop.receiving_point.name}</p>
+                    <p>受取住所:{item.commodity_crop.receiving_point.address}</p>
+                  </div>
                   <div className="flex justify-end items-center font-roboto pr-5">
                     <div className="flex items-center pr-2">
                       <p>{item.commodity_crop.capacity.toLocaleString('ja-JP')}</p>
@@ -65,10 +69,12 @@ const Page = () => {
                   </div>
                 </div>
                 {/* 削除ボタン */}
-                <RiDeleteBinLine
-                  onClick={() => handleRemoveItem(item.id)}
-                  className="text-3xl text-red-300 cursor-pointer"
-                />
+                <div>
+                  <RiDeleteBinLine
+                    onClick={() => handleRemoveItem(item.id)}
+                    className="text-3xl text-red-300 cursor-pointer"
+                  />
+                </div>
               </div>
             ))}
           </div>

@@ -15,6 +15,14 @@ const apiClient = axios.create({
 
 // リクエストのログ(デバッグ用)
 apiClient.interceptors.request.use((config) => {
+  if (typeof window !== 'undefined') {
+    const raw = localStorage.getItem('producerToken');
+    if (raw) {
+      const token = raw.startsWith('Bearer ') ? raw.replace(/^Bearer\s+/i, '') : raw;
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
   // eslint-disable-next-line no-console
   console.log('Request:', config);
   return config;

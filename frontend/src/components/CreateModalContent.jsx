@@ -1,6 +1,6 @@
 'use client';
 
-export const CreateModalContent = ({ isOpen, onClose, onGoHome }) => {
+export const CreateModalContent = ({ isOpen, onClose, onGoDashboard }) => {
   if (!isOpen) return null;
 
   return (
@@ -10,10 +10,10 @@ export const CreateModalContent = ({ isOpen, onClose, onGoHome }) => {
           <h2 className="font-noto text-xl font-bold mb-6 text-slate-700">作物が出品されました！!</h2>
           <div className="flex justify-center space-x-4">
             <button
-              onClick={onGoHome}
+              onClick={onGoDashboard}
               className="font-noto text-xs px-6 py-3 bg-sprayGreen text-white rounded hover:bg-green-600 transition"
             >
-              ホームへ戻る
+              生産者画面へ
             </button>
             <button
               onClick={onClose}

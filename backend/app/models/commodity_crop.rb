@@ -1,5 +1,6 @@
 class CommodityCrop < ApplicationRecord
-  belongs_to :producer, optional: true
+  belongs_to :producer
+  belongs_to :receiving_point
   belongs_to :crop
   has_many :commodity_crop_images, dependent: :destroy
 
@@ -10,4 +11,8 @@ class CommodityCrop < ApplicationRecord
   validates :capacity, numericality: { greater_than: 0 }
   validates :price, numericality: { greater_than: 0 }
   validates :description, presence: true
+  validates :grade,
+            inclusion: { in: %w[A B], message: I18n.t('errors.messages.grade_inclusion') },
+            allow_nil: true
+  validates :condition, length: { maximum: 2000 }, allow_nil: true
 end

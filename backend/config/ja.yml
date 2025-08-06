@@ -1,0 +1,4 @@
+ja:
+  errors:
+    messages:
+      grade_inclusion: 'は A または B を指定してください'
