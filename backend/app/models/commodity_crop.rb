@@ -13,7 +13,7 @@ class CommodityCrop < ApplicationRecord
   validates :description, presence: true
   validates :grade,
             inclusion: { in: %w[A B],
-                          message: "は A または B を指定してください"},
+                         message: "は A または B を指定してください" },
             allow_nil: true
   validates :condition, length: { maximum: 2000 }, allow_nil: true
 end

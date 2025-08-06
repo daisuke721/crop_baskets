@@ -21,7 +21,7 @@ class Api::V1::ReceivingPointsController < ApplicationController
   end
 
   def destroy
-    if @receiving_point.producer === current_producer
+    if @receiving_point.producer == current_producer
       @receiving_point.destroy
       head :no_content
     else

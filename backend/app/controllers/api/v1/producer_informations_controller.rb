@@ -10,7 +10,7 @@ class Api::V1::ProducerInformationsController < ApplicationController
       end
       render json: info, serializer: ProducerInformationSerializer, status: :created
     else
-        render json: { errors: info.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: info.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
