@@ -13,6 +13,7 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { addToCart } from '../lib/api/cart';
 import { ModalLayout } from '../Layout/ModalLayout';
 import { MainCartAddModalContent } from './MainCartAddModalContent';
+import { fetchMyProducerInformation } from '../lib/api/producerInformations';
 
 export const MainCardsSlider = () => {
   const router = useRouter();
@@ -40,6 +41,13 @@ export const MainCardsSlider = () => {
     };
 
     loadCrops();
+  }, []);
+
+  // 生産者アイコンと名前
+  const [summary, setSummary] = useState(null);
+
+  useEffect(() => {
+    (async () => setSummary(await fetchMyProducerInformation()))();
   }, []);
 
   // カード内のカートへ入れるがクリックされるとカート内へ追加
@@ -103,14 +111,26 @@ export const MainCardsSlider = () => {
                   onClick={() => handleDetailId(crop.id)}
                   className="w-full max-w-[192px] mx-auto border rounded-lg shadow cursor-pointer overflow-hidden transform transition-transform hover:-translate-y-1"
                 >
-                  <Image
-                    src={crop.commodity_crop_images[0]?.image_url || '/placeholder.png'}
-                    width={50}
-                    height={50}
-                    alt="商品画像"
-                    className="w-full h-40 object-cover"
-                    unoptimized
-                  />
+                  <div className="relative mb-6">
+                    <Image
+                      src={crop.commodity_crop_images[0]?.image_url || '/placeholder.png'}
+                      width={50}
+                      height={50}
+                      alt="商品画像"
+                      className="w-full h-32 object-cover"
+                      unoptimized
+                    />
+                    <div className="absolute -bottom-9 flex items-baseline px-2 py-1 space-x-3">
+                      <img
+                        src={summary?.image_url || '/placeholder.png'}
+                        alt=""
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <div className="text-gray-500">
+                        <div className="text-sm">{summary?.name || '生産者'}</div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="px-4 py-2 font-noto">
                     <h3 className="text-sm font-semibold truncate">{crop.name}</h3>
                     <div className="flex items-center text-xs pt-1 text-gray-500">
