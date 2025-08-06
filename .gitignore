@@ -48,6 +48,7 @@
 
 # Rails のマスターキー（機密情報）
 /backend/config/master.key
+/backend/config/credentials/production.key
 
 # macOS / Windows の不要ファイルを無視
 .DS_Store
