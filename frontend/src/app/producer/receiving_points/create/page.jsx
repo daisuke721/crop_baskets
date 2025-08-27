@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { createReceivingPoint } from '../../../../lib/api/receivingPoints';
 
-const center = { lat: 35.681236, lng: 139.767125 };
+const center = { lat: 31.719725729357744, lng: 131.06159448623657 };
 
 const containerStyle = {
   width: '100%',
