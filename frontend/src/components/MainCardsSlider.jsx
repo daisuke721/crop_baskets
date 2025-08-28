@@ -13,7 +13,6 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { addToCart } from '../lib/api/cart';
 import { ModalLayout } from '../Layout/ModalLayout';
 import { MainCartAddModalContent } from './MainCartAddModalContent';
-import { fetchMyProducerInformation } from '../lib/api/producerInformations';
 
 export const MainCardsSlider = () => {
   const router = useRouter();
@@ -41,13 +40,6 @@ export const MainCardsSlider = () => {
     };
 
     loadCrops();
-  }, []);
-
-  // 生産者アイコンと名前
-  const [summary, setSummary] = useState(null);
-
-  useEffect(() => {
-    (async () => setSummary(await fetchMyProducerInformation()))();
   }, []);
 
   // カード内のカートへ入れるがクリックされるとカート内へ追加
@@ -122,12 +114,12 @@ export const MainCardsSlider = () => {
                     />
                     <div className="absolute -bottom-9 flex items-baseline px-2 py-1 space-x-3">
                       <img
-                        src={summary?.image_url || '/placeholder.png'}
+                        src={crop.producer_icon_url || '/placeholder.png'}
                         alt=""
                         className="w-12 h-12 rounded-full object-cover"
                       />
                       <div className="text-gray-500">
-                        <div className="text-sm">{summary?.name || '生産者'}</div>
+                        <div className="text-sm">{crop.producer_display_name || '生産者'}</div>
                       </div>
                     </div>
                   </div>
