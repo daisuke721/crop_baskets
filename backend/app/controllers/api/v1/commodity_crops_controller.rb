@@ -6,7 +6,8 @@ class Api::V1::CommodityCropsController < ApplicationController
   before_action :set_commodity_crop, only: [:show, :update, :destroy]
 
   def index
-    commodity_crops = CommodityCrop.includes(:crop, :commodity_crop_images).all
+    commodity_crops = CommodityCrop.includes(:crop, :commodity_crop_images, :receiving_point,
+                                             producer: :producer_information).order(created_at: :desc)
     render json: commodity_crops, each_serializer: CommodityCropListSerializer
   end
 
@@ -89,6 +90,7 @@ class Api::V1::CommodityCropsController < ApplicationController
   end
 
   def set_commodity_crop
-    @commodity_crop = CommodityCrop.includes(:crop, :commodity_crop_images).find(params[:id])
+    @commodity_crop = CommodityCrop.includes(:crop, :commodity_crop_images, :receiving_point,
+                                             producer: { producer_information: { image_attachment: :blob } }).find(params[:id])
   end
 end
