@@ -188,7 +188,7 @@ const Page = () => {
 
     // バリデーションを通過 → エラークリア
     setErrors({});
-    // フォームのデータを作る
+
     const formDataToSend = new FormData();
 
     if (harvestDate) {
