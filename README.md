@@ -1,4 +1,4 @@
-# Crop Baskets
+# Crop Baskets(開発中)
 ![コンセプト](/documents/コンセプト.png)
 
 「Crop Baskets」は生産者が育てた農作物を自由な価格で出品・販売でき、受け取りポイントを設定することで、消費者へ直接の受け渡しや無人販売が可能になります。
@@ -74,7 +74,14 @@ https://www.cropbaskets.jp/
 ---
 
 ### 📝ER図
-![ER図](/documents/ER図.png)
+#### 完成予定ER図
+![完成ER図](/documents/完成予定ER図.png)
+
+#### 現在のER図
+![現在ER図](/documents/現在のER図.png)
+
+#### 変更中のER図
+![変更ER図](/documents/変更ER図.png)
 
 ---
 
